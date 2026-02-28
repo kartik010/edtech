@@ -87,7 +87,7 @@ export default async function Home() {
               className="text-lg md:text-xl text-zinc-400 max-w-2xl mb-10 leading-relaxed animate-fade-in"
               style={{ animationDelay: "0.3s" }}
             >
-              Join Sonny&apos;s Academy and learn from expertly crafted courses,
+              Join VISION 1000 and learn from expertly crafted courses,
               modules, and hands-on lessons. From free fundamentals to{" "}
               <span className="text-fuchsia-400">Pro exclusives</span> and{" "}
               <span className="text-cyan-400">Ultra gems</span>.
@@ -406,10 +406,10 @@ export default async function Home() {
         <footer className="px-6 lg:px-12 py-12 border-t border-zinc-800/50 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
                 <Code2 className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold">Sonny&apos;s Academy</span>
+              <span className="font-bold">VISION&apos;1000</span>
             </div>
             <div className="flex items-center gap-8 text-sm text-zinc-500">
               <Link href="#" className="hover:text-white transition-colors">
@@ -423,7 +423,7 @@ export default async function Home() {
               </Link>
             </div>
             <p className="text-sm text-zinc-600">
-              © 2024 Sonny&apos;s Academy. All rights reserved.
+              © 2025 VISION 1000. All rights reserved.
             </p>
           </div>
         </footer>
