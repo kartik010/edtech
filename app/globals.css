@@ -124,3 +124,59 @@
     @apply bg-background text-foreground;
   }
 }
+/* Custom animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+/* Clerk Pricing Table text styling */
+.cl-pricingTableCardPeriodToggle label,
+.cl-pricingTableCardPeriodToggle span {
+  color: white !important;
+}
+
+.cl-pricingTableCardHeader,
+.cl-pricingTableCardHeader * {
+  color: white !important;
+}
+
+.cl-pricingTableCardTitle {
+  text-transform: capitalize !important;
+}
+
+/* Clerk Pricing Table responsive overrides */
+.clerk-pricing-wrapper {
+  overflow-x: auto;
+}
+
+@media (max-width: 750px) {
+  .cl-pricingTable {
+    grid-template-columns: 1fr !important;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 750px) {
+  .cl-pricingTable {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* Clerk modal z-index fixes */
+div[role="dialog"],
+div[role="alertdialog"] {
+  z-index: 99999 !important;
+}
