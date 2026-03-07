@@ -97,17 +97,29 @@ function ReferenceInputField({
 
   return (
     <div className="space-y-2">
-      <Label htmlFor={path} className="text-zinc-300">{label}</Label>
+      <Label htmlFor={path} className="text-zinc-300">
+        {label}
+      </Label>
       <Select value={currentRefId || "__none__"} onValueChange={handleChange}>
-        <SelectTrigger id={path} className="bg-zinc-800/50 border-zinc-700 text-zinc-300">
+        <SelectTrigger
+          id={path}
+          className="bg-zinc-800/50 border-zinc-700 text-zinc-300"
+        >
           <SelectValue placeholder={placeholder ?? "Select..."} />
         </SelectTrigger>
         <SelectContent className="bg-zinc-800 border-zinc-700">
-          <SelectItem value="__none__" className="text-zinc-300 focus:bg-zinc-700 focus:text-white">
+          <SelectItem
+            value="__none__"
+            className="text-zinc-300 focus:bg-zinc-700 focus:text-white"
+          >
             <span className="text-zinc-500">None</span>
           </SelectItem>
           {availableDocuments?.map((doc) => (
-            <SelectItem key={doc.documentId} value={doc.documentId} className="text-zinc-300 focus:bg-zinc-700 focus:text-white">
+            <SelectItem
+              key={doc.documentId}
+              value={doc.documentId}
+              className="text-zinc-300 focus:bg-zinc-700 focus:text-white"
+            >
               <Suspense fallback={doc.documentId}>
                 <ReferenceOption {...doc} />
               </Suspense>

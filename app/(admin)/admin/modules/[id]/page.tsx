@@ -11,5 +11,7 @@ export default function EditModulePage({
 }) {
   const { id } = use(params);
 
-  return <ModuleEditor documentId={id} projectId={projectId} dataset={dataset} />;
+  return (
+    <ModuleEditor documentId={id} projectId={projectId} dataset={dataset} />
+  );
 }

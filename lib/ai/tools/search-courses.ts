@@ -31,7 +31,7 @@ const courseSearchSchema = z.object({
   query: z
     .string()
     .describe(
-      "The topic, skill, technology, or learning goal the user wants to learn about"
+      "The topic, skill, technology, or learning goal the user wants to learn about",
     ),
 });
 
@@ -63,7 +63,7 @@ interface Course {
 // Helper function to check if text contains search term (case-insensitive)
 function textContains(
   text: string | null | undefined,
-  searchTerm: string
+  searchTerm: string,
 ): boolean {
   if (!text) return false;
   return text.toLowerCase().includes(searchTerm.toLowerCase());
@@ -115,7 +115,7 @@ export const searchCoursesTool = tool({
     console.log("[SearchCourses] Courses fetched:", allCourses.length);
     console.log(
       "[SearchCourses] Course titles:",
-      allCourses.map((c: Course) => c.title)
+      allCourses.map((c: Course) => c.title),
     );
 
     // Split query into search terms
@@ -146,7 +146,7 @@ export const searchCoursesTool = tool({
 
     console.log(
       "[SearchCourses] Scored courses:",
-      scoredCourses.map((s) => ({ title: s.course.title, score: s.score }))
+      scoredCourses.map((s) => ({ title: s.course.title, score: s.score })),
     );
 
     if (scoredCourses.length === 0) {
@@ -191,7 +191,7 @@ export const searchCoursesTool = tool({
         moduleCount: moduleDetails.length,
         lessonCount: moduleDetails.reduce(
           (acc, m) => acc + m.lessons.length,
-          0
+          0,
         ),
         modules: moduleDetails,
       };

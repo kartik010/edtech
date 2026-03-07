@@ -33,4 +33,3 @@ export function ModuleOptionLabel({
 
   return <>{(data as { title?: string })?.title || "Untitled"}</>;
 }
-

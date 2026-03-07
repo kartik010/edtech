@@ -11,5 +11,7 @@ export default function EditCoursePage({
 }) {
   const { id } = use(params);
 
-  return <CourseEditor documentId={id} projectId={projectId} dataset={dataset} />;
+  return (
+    <CourseEditor documentId={id} projectId={projectId} dataset={dataset} />
+  );
 }

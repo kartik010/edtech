@@ -38,9 +38,9 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
     : false;
 
   const hasQuiz = lesson.quiz && lesson.quiz.length > 0;
-  
+
   // Find highest score if user has taken quiz
-  const userScoreRecord = userId 
+  const userScoreRecord = userId
     ? lesson.quizScores?.find((score) => score.userId === userId)
     : null;
   const bestScore = userScoreRecord?.score ?? null;

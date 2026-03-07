@@ -11,5 +11,7 @@ export default function EditCategoryPage({
 }) {
   const { id } = use(params);
 
-  return <CategoryEditor documentId={id} projectId={projectId} dataset={dataset} />;
+  return (
+    <CategoryEditor documentId={id} projectId={projectId} dataset={dataset} />
+  );
 }

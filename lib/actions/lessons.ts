@@ -7,7 +7,7 @@ import { writeClient } from "@/sanity/lib/client";
 export async function toggleLessonCompletion(
   lessonId: string,
   lessonSlug: string,
-  markComplete: boolean
+  markComplete: boolean,
 ): Promise<{ success: boolean; isCompleted: boolean }> {
   const { userId } = await auth();
 
@@ -45,7 +45,7 @@ export async function submitQuizAttempt(
   lessonId: string,
   lessonSlug: string,
   score: number,
-  previousBestScore: number | null
+  previousBestScore: number | null,
 ): Promise<{ success: boolean; isCompleted: boolean }> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { userId } = await auth();
@@ -62,16 +62,18 @@ export async function submitQuizAttempt(
     if (previousBestScore === null || score > previousBestScore) {
       patch.setIfMissing({ quizScores: [] });
       patch.unset([`quizScores[userId == "${userId}"]`]);
-      patch.append("quizScores", [{ userId, score, _key: crypto.randomUUID() }]);
+      patch.append("quizScores", [
+        { userId, score, _key: crypto.randomUUID() },
+      ]);
     }
 
     if (passed) {
       patch.setIfMissing({ completedBy: [] });
       patch.insert("after", "completedBy[-1]", [userId]);
       // Note: we can't reliably prevent duplicates with append/insert easily without unset or complex transaction,
-      // but if the UI prevents re-taking after completion it's generally fine. 
+      // but if the UI prevents re-taking after completion it's generally fine.
       // To be safe, we'll try to keep it simple. Actually, let's just use regular append.
-      // But wait, the standard toggleCompletion does: patch.append("completedBy", [userId]). 
+      // But wait, the standard toggleCompletion does: patch.append("completedBy", [userId]).
       // It might result in dupes, but it works fine for boolean checks.
     }
 

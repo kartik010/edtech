@@ -1,11 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import {
-  useDocument,
-  useEditDocument,
-  useDocuments,
-} from "@sanity/sdk-react";
+import { useDocument, useEditDocument, useDocuments } from "@sanity/sdk-react";
 import {
   DndContext,
   closestCenter,
@@ -218,4 +214,3 @@ export function ReferenceArrayInput(props: ReferenceArrayInputProps) {
 }
 
 export type { ReferenceArrayInputProps } from "./types";
-

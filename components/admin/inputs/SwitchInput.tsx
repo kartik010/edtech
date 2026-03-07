@@ -58,5 +58,3 @@ export function SwitchInput(props: SwitchInputProps) {
     </Suspense>
   );
 }
-
-

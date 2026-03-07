@@ -34,7 +34,10 @@ export function Quiz({
 }: QuizProps) {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
-  const [result, setResult] = useState<{ score: number; passed: boolean } | null>(null);
+  const [result, setResult] = useState<{
+    score: number;
+    passed: boolean;
+  } | null>(null);
 
   const handleOptionSelect = (questionKey: string, option: string) => {
     if (result) return; // Prevent changing answers after submission
@@ -63,7 +66,7 @@ export function Quiz({
         lessonId,
         lessonSlug,
         scorePercentage,
-        bestScore
+        bestScore,
       );
 
       setResult({
@@ -77,7 +80,8 @@ export function Quiz({
     });
   };
 
-  const isComplete = questions && Object.keys(answers).length === questions.length;
+  const isComplete =
+    questions && Object.keys(answers).length === questions.length;
 
   return (
     <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 md:p-8 mt-8">
@@ -106,7 +110,6 @@ export function Quiz({
 
       <div className="space-y-8">
         {questions?.map((q: QuizQuestion, index: number) => {
-          
           return (
             <div
               key={q._key}
@@ -115,22 +118,26 @@ export function Quiz({
               <h3 className="text-lg font-medium text-white mb-4">
                 {index + 1}. {q.title}
               </h3>
-              
+
               <div className="space-y-3">
                 {q.options?.map((option: string) => {
                   const isSelected = answers[q._key] === option;
                   const showCorrection = result !== null;
                   const isCorrectAnswer = option === q.correctAnswer;
-                  
-                  let optionClass = "border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 outline-none text-zinc-300";
-                  
+
+                  let optionClass =
+                    "border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 outline-none text-zinc-300";
+
                   if (isSelected && !showCorrection) {
-                    optionClass = "border-violet-500 bg-violet-500/10 text-violet-300";
+                    optionClass =
+                      "border-violet-500 bg-violet-500/10 text-violet-300";
                   } else if (showCorrection) {
                     if (isCorrectAnswer) {
-                      optionClass = "border-emerald-500/50 bg-emerald-500/10 text-emerald-400";
+                      optionClass =
+                        "border-emerald-500/50 bg-emerald-500/10 text-emerald-400";
                     } else if (isSelected && !isCorrectAnswer) {
-                      optionClass = "border-red-500/50 bg-red-500/10 text-red-400";
+                      optionClass =
+                        "border-red-500/50 bg-red-500/10 text-red-400";
                     } else {
                       optionClass = "border-zinc-800 text-zinc-500 opacity-50";
                     }
@@ -191,16 +198,12 @@ export function Quiz({
           <h3 className="text-2xl font-bold text-white mb-2">
             You scored {result.score}%
           </h3>
-          <p
-            className={
-              result.passed ? "text-emerald-400" : "text-red-400"
-            }
-          >
+          <p className={result.passed ? "text-emerald-400" : "text-red-400"}>
             {result.passed
               ? "Congratulations! You've passed the quiz and completed the lesson."
               : "You need 80% to pass. Review the lesson and try again!"}
           </p>
-          
+
           {!result.passed && (
             <Button
               onClick={() => {

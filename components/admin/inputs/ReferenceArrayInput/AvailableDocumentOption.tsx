@@ -18,4 +18,3 @@ export function AvailableDocumentOption({
 
   return <>{(data as { title?: string })?.title || "Untitled"}</>;
 }
-

@@ -81,4 +81,3 @@ export function CourseWithModulesAndLessons({
     </AccordionItem>
   );
 }
-

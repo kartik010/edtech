@@ -130,7 +130,8 @@ export const DASHBOARD_COURSES_QUERY = defineQuery(`*[
   },
   modules[]-> {
     lessons[]-> {
-      completedBy
+      completedBy,
+      quizScores
     }
   },
   "moduleCount": count(modules),

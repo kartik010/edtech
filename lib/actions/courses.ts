@@ -7,7 +7,7 @@ import { writeClient } from "@/sanity/lib/client";
 export async function toggleCourseCompletion(
   courseId: string,
   courseSlug: string,
-  markComplete: boolean
+  markComplete: boolean,
 ): Promise<{ success: boolean; isCompleted: boolean }> {
   const { userId } = await auth();
 
@@ -38,4 +38,3 @@ export async function toggleCourseCompletion(
     return { success: false, isCompleted: !markComplete };
   }
 }
-

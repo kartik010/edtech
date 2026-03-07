@@ -87,8 +87,8 @@ export default async function Home() {
               className="text-lg md:text-xl text-zinc-400 max-w-2xl mb-10 leading-relaxed animate-fade-in"
               style={{ animationDelay: "0.3s" }}
             >
-              Join VISION 1000 and learn from expertly crafted courses,
-              modules, and hands-on lessons. From free fundamentals to{" "}
+              Join VISION 1000 and learn from expertly crafted courses, modules,
+              and hands-on lessons. From free fundamentals to{" "}
               <span className="text-fuchsia-400">Pro exclusives</span> and{" "}
               <span className="text-cyan-400">Ultra gems</span>.
             </p>

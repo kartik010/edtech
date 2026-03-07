@@ -10,7 +10,13 @@ type Course = NonNullable<COURSE_WITH_MODULES_QUERYResult>;
 
 type CourseHeroProps = Pick<
   Course,
-  "title" | "description" | "tier" | "thumbnail" | "category" | "moduleCount" | "lessonCount"
+  | "title"
+  | "description"
+  | "tier"
+  | "thumbnail"
+  | "category"
+  | "moduleCount"
+  | "lessonCount"
 >;
 
 export function CourseHero({
@@ -96,4 +102,3 @@ export function CourseHero({
     </div>
   );
 }
-

@@ -156,7 +156,9 @@ export function ModuleAccordionItemContent({
   };
 
   const handleRemoveLesson = (lessonRef: string) => {
-    editLessons(lessons.filter((l) => l._ref !== lessonRef) as SanityReference[]);
+    editLessons(
+      lessons.filter((l) => l._ref !== lessonRef) as SanityReference[],
+    );
   };
 
   const lessonSortableIds = lessons.map((l) => l._key ?? l._ref);
@@ -294,4 +296,3 @@ export function ModuleAccordionItemContent({
     </div>
   );
 }
-

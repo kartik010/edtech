@@ -10,7 +10,7 @@ import type { Tier } from "@/lib/constants";
  * - Ultra content: requires ultra plan
  */
 export async function hasAccessToTier(
-  requiredTier: Tier | null | undefined
+  requiredTier: Tier | null | undefined,
 ): Promise<boolean> {
   // Free content or no tier = accessible to everyone
   if (!requiredTier || requiredTier === "free") return true;

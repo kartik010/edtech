@@ -66,7 +66,7 @@ interface MuxAssetStatus {
 }
 
 export async function getMuxUploadStatus(
-  uploadId: string
+  uploadId: string,
 ): Promise<MuxAssetStatus> {
   if (!process.env.MUX_TOKEN_ID || !process.env.MUX_TOKEN_SECRET) {
     return {
@@ -84,7 +84,7 @@ export async function getMuxUploadStatus(
     if (upload.asset_id) {
       const asset = await mux.video.assets.retrieve(upload.asset_id);
       const signedPlayback = asset.playback_ids?.find(
-        (p) => p.policy === "signed"
+        (p) => p.policy === "signed",
       );
 
       // If asset is ready, create/update the Sanity mux.videoAsset document
@@ -171,7 +171,7 @@ interface MuxTokensResult {
 }
 
 export async function getMuxSignedTokens(
-  playbackId: string | null | undefined
+  playbackId: string | null | undefined,
 ): Promise<MuxTokensResult> {
   const signingKey = process.env.MUX_SIGNING_KEY;
   const signingKeyId = process.env.MUX_SIGNING_KEY_ID;
@@ -204,21 +204,21 @@ export async function getMuxSignedTokens(
     const playbackToken = jwt.sign(
       { sub: playbackId, exp: expirationTime, kid: signingKeyId, aud: "v" },
       formattedKey,
-      { algorithm: "RS256" }
+      { algorithm: "RS256" },
     );
 
     // Generate thumbnail token (aud: "t")
     const thumbnailToken = jwt.sign(
       { sub: playbackId, exp: expirationTime, kid: signingKeyId, aud: "t" },
       formattedKey,
-      { algorithm: "RS256" }
+      { algorithm: "RS256" },
     );
 
     // Generate storyboard token (aud: "s")
     const storyboardToken = jwt.sign(
       { sub: playbackId, exp: expirationTime, kid: signingKeyId, aud: "s" },
       formattedKey,
-      { algorithm: "RS256" }
+      { algorithm: "RS256" },
     );
 
     return { playbackToken, thumbnailToken, storyboardToken };
@@ -240,7 +240,7 @@ export async function getMuxSignedTokens(
 
 // Legacy function for backwards compatibility
 export async function getMuxSignedToken(
-  playbackId: string | null | undefined
+  playbackId: string | null | undefined,
 ): Promise<{ token: string | null; error?: string; debug?: string }> {
   const result = await getMuxSignedTokens(playbackId);
   return {

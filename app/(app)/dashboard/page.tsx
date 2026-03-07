@@ -25,6 +25,54 @@ export default async function DashboardPage() {
 
   const firstName = user.firstName ?? user.username ?? "there";
 
+  // Calculate metrics
+  let totalLessonsEnrolled = 0;
+  let totalLessonsCompleted = 0;
+  let totalQuizzesTaken = 0;
+  let totalQuizScore = 0;
+
+  courses.forEach((course) => {
+    let hasStartedCourse = false;
+    course.modules?.forEach((module) => {
+      module.lessons?.forEach((lesson) => {
+        const isCompleted = lesson.completedBy?.includes(user.id);
+        if (isCompleted) {
+          hasStartedCourse = true;
+        }
+
+        // Calculate Quiz Scores
+        const userQuizScore = lesson.quizScores?.find(
+          (score) => score.userId === user.id,
+        );
+        if (userQuizScore) {
+          totalQuizzesTaken++;
+          totalQuizScore += userQuizScore.score ?? 0;
+        }
+      });
+    });
+
+    if (hasStartedCourse || course.completedBy?.includes(user.id)) {
+      // User has started this course, so count its lessons
+      totalLessonsEnrolled += course.lessonCount ?? 0;
+
+      course.modules?.forEach((module) => {
+        module.lessons?.forEach((lesson) => {
+          if (lesson.completedBy?.includes(user.id)) {
+            totalLessonsCompleted++;
+          }
+        });
+      });
+    }
+  });
+
+  const overallCompletionRate =
+    totalLessonsEnrolled > 0
+      ? Math.round((totalLessonsCompleted / totalLessonsEnrolled) * 100)
+      : 0;
+
+  const averageAssessmentScore =
+    totalQuizzesTaken > 0 ? Math.round(totalQuizScore / totalQuizzesTaken) : 0;
+
   return (
     <div className="min-h-screen bg-[#09090b] text-white overflow-hidden">
       {/* Animated gradient mesh background */}
@@ -80,8 +128,60 @@ export default async function DashboardPage() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
+          {/* Completion Rate */}
+          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 lg:col-span-1">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                <svg
+                  className="w-5 h-5 text-blue-400"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  role="img"
+                >
+                  <title>Completion Rate Target Icon</title>
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="m16 10-4 4-4-4" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{overallCompletionRate}%</p>
+                <p className="text-sm text-zinc-500">Completion Rate</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Assessment Score */}
+          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 lg:col-span-1">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                <svg
+                  className="w-5 h-5 text-orange-400"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  role="img"
+                >
+                  <title>Assessment Score Graduation Cap Icon</title>
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                  <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{averageAssessmentScore}%</p>
+                <p className="text-sm text-zinc-500">Avg. Score</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 lg:col-span-1">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-violet-400" />
@@ -93,7 +193,7 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800">
+          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 lg:col-span-1">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-emerald-400" />
@@ -108,7 +208,7 @@ export default async function DashboardPage() {
           {userTier !== "ultra" && (
             <Link
               href="/pricing"
-              className="p-6 rounded-xl bg-gradient-to-br from-violet-600/20 to-fuchsia-600/20 border border-violet-500/30 hover:border-violet-500/50 transition-colors group"
+              className="p-6 rounded-xl bg-gradient-to-br from-violet-600/20 to-fuchsia-600/20 border border-violet-500/30 hover:border-violet-500/50 transition-colors group lg:col-span-1"
             >
               <div className="flex items-center justify-between">
                 <div>

@@ -39,4 +39,3 @@ export function OrphanLessons({ documents }: OrphanLessonsProps) {
     </div>
   );
 }
-

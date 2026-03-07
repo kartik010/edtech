@@ -24,7 +24,7 @@ export function useUserTier(): Tier {
  */
 export function hasTierAccess(
   userTier: Tier,
-  contentTier: Tier | null | undefined
+  contentTier: Tier | null | undefined,
 ): boolean {
   // Free content or no tier = accessible to everyone
   if (!contentTier || contentTier === "free") return true;

@@ -21,7 +21,11 @@ export function LessonCompleteButton({
 
   const handleToggle = () => {
     startTransition(async () => {
-      const result = await toggleLessonCompletion(lessonId, lessonSlug, !isCompleted);
+      const result = await toggleLessonCompletion(
+        lessonId,
+        lessonSlug,
+        !isCompleted,
+      );
       if (result.success) {
         setIsCompleted(result.isCompleted);
       }
