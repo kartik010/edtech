@@ -80,8 +80,8 @@ export function CourseList({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCourses.map((course) => (
             <CourseCard
-              key={course.slug!.current!}
-              slug={{ current: course.slug!.current! }}
+              key={course._id}
+              slug={{ current: course.slug?.current || "" }}
               title={course.title}
               description={course.description}
               tier={course.tier}
