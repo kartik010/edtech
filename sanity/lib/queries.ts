@@ -199,6 +199,8 @@ export const LESSON_BY_ID_QUERY = defineQuery(`*[
     }
   },
   content,
+  quiz,
+  quizScores,
   completedBy,
   "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(
     select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)
@@ -238,6 +240,8 @@ export const LESSON_BY_SLUG_QUERY = defineQuery(`*[
     }
   },
   content,
+  quiz,
+  quizScores,
   completedBy,
   "courses": *[_type == "course" && ^._id in modules[]->lessons[]->_id] | order(
     select(tier == "free" => 0, tier == "pro" => 1, tier == "ultra" => 2)

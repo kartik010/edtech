@@ -1,4 +1,4 @@
-import { PlayIcon, UserIcon, VideoIcon } from "@sanity/icons";
+import { PlayIcon, UserIcon, VideoIcon, HelpCircleIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const lessonType = defineType({
@@ -9,6 +9,7 @@ export const lessonType = defineType({
   groups: [
     { name: "content", title: "Content", icon: PlayIcon, default: true },
     { name: "video", title: "Video", icon: VideoIcon },
+    { name: "quiz", title: "Quiz", icon: HelpCircleIcon },
     { name: "settings", title: "Settings" },
     { name: "completion", title: "Completed By", icon: UserIcon },
   ],
@@ -89,6 +90,63 @@ export const lessonType = defineType({
       group: "completion",
       description: "List of user IDs who have completed this lesson",
       of: [defineArrayMember({ type: "string" })],
+      readOnly: true,
+    }),
+    defineField({
+      name: "quiz",
+      type: "array",
+      group: "quiz",
+      description: "Optional multiple-choice quiz for this lesson",
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "question",
+          fields: [
+            defineField({
+              name: "title",
+              title: "Question",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: "options",
+              title: "Options",
+              type: "array",
+              of: [defineArrayMember({ type: "string" })],
+              validation: (Rule) => Rule.required().min(2).max(10),
+            }),
+            defineField({
+              name: "correctAnswer",
+              title: "Correct Answer",
+              type: "string",
+              description: "Must match one of the options exactly",
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: "quizScores",
+      type: "array",
+      group: "completion",
+      description: "User highest quiz scores",
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "userScore",
+          fields: [
+            defineField({
+              name: "userId",
+              type: "string",
+            }),
+            defineField({
+              name: "score",
+              type: "number",
+            }),
+          ],
+        }),
+      ],
       readOnly: true,
     }),
   ],

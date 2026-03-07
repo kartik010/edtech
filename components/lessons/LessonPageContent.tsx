@@ -9,6 +9,7 @@ import { useUserTier, hasTierAccess } from "@/lib/hooks/use-user-tier";
 import { LessonContent } from "./LessonContent";
 import { LessonCompleteButton } from "./LessonCompleteButton";
 import { LessonSidebar } from "./LessonSidebar";
+import { Quiz } from "./Quiz";
 import type { LESSON_BY_ID_QUERYResult } from "@/sanity.types";
 import { MuxVideoPlayer } from "./MuxVideoPlayer";
 
@@ -35,6 +36,14 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
   const isCompleted = userId
     ? (lesson.completedBy?.includes(userId) ?? false)
     : false;
+
+  const hasQuiz = lesson.quiz && lesson.quiz.length > 0;
+  
+  // Find highest score if user has taken quiz
+  const userScoreRecord = userId 
+    ? lesson.quizScores?.find((score) => score.userId === userId)
+    : null;
+  const bestScore = userScoreRecord?.score ?? null;
 
   // Find previous and next lessons for navigation
   const modules = activeCourse?.modules;
@@ -105,7 +114,7 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
                 )}
               </div>
 
-              {userId && (
+              {userId && !hasQuiz && (
                 <LessonCompleteButton
                   lessonId={lesson._id}
                   lessonSlug={lesson.slug!.current!}
@@ -123,6 +132,16 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
                 </div>
                 <LessonContent content={lesson.content} />
               </div>
+            )}
+
+            {/* Quiz Component */}
+            {hasQuiz && lesson.quiz && (
+              <Quiz
+                lessonId={lesson._id}
+                lessonSlug={lesson.slug!.current!}
+                questions={lesson.quiz}
+                bestScore={bestScore}
+              />
             )}
 
             {/* Navigation between lessons */}
