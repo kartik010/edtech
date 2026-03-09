@@ -19,6 +19,7 @@ import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { sanityFetch } from "@/sanity/lib/live";
 import { FEATURED_COURSES_QUERY, STATS_QUERY } from "@/sanity/lib/queries";
+import type { FEATURED_COURSES_QUERYResult } from "@/sanity.types";
 
 export const dynamic = "force-dynamic";
 
@@ -280,7 +281,7 @@ export default async function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {courses.map((course) => (
+            {courses.map((course: FEATURED_COURSES_QUERYResult[number]) => (
               <CourseCard
                 key={course.slug?.current || ""}
                 slug={{ current: course.slug?.current || "" }}
