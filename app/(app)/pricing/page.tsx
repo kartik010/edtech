@@ -143,7 +143,7 @@ export default async function PricingPage() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center">
               <Code2 className="w-4 h-4 text-white" />
             </div>
-            <span className="font-bold">Sonny&apos;s Academy</span>
+            <span className="font-bold">VISION 1000</span>
           </div>
           <div className="flex items-center gap-8 text-sm text-zinc-500">
             <Link href="#" className="hover:text-white transition-colors">
@@ -157,7 +157,7 @@ export default async function PricingPage() {
             </Link>
           </div>
           <p className="text-sm text-zinc-600">
-            2024 Sonny&apos;s Academy. All rights reserved.
+            2025 VISION 1000. All rights reserved.
           </p>
         </div>
       </footer>

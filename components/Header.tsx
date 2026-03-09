@@ -28,10 +28,10 @@ import {
 import { cn } from "@/lib/utils";
 
 const loggedOutLinks = [
-  { href: "#courses", label: "Courses" },
+  { href: "#courses", label: "Courses", homeOnly: true },
   { href: "/student-stories", label: "Student Stories" },
   { href: "/pricing", label: "Pricing" },
-  { href: "#testimonials", label: "Reviews" },
+  { href: "#testimonials", label: "Reviews", homeOnly: true },
 ];
 
 export function Header() {
@@ -39,6 +39,12 @@ export function Header() {
   const { has } = useAuth();
 
   const isUltra = has?.({ plan: "ultra" });
+  const isHomepage = pathname === "/";
+
+  // Filter out anchor-only links when not on the homepage
+  const visibleLoggedOutLinks = loggedOutLinks.filter(
+    (link) => !link.homeOnly || isHomepage,
+  );
 
   const loggedInLinks = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -70,7 +76,7 @@ export function Header() {
       <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <SignedOut>
           <div className="flex items-center gap-8 text-sm text-zinc-400">
-            {loggedOutLinks.map((link) => (
+            {visibleLoggedOutLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -128,7 +134,7 @@ export function Header() {
               align="end"
               className="bg-zinc-900 border-zinc-800"
             >
-              {loggedOutLinks.map((link) => (
+              {visibleLoggedOutLinks.map((link) => (
                 <DropdownMenuItem key={link.href} asChild>
                   <Link
                     href={link.href}
