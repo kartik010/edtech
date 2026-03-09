@@ -14,6 +14,7 @@ import {
   Menu,
   Play,
   Sparkles,
+  Star,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,6 +29,7 @@ import { cn } from "@/lib/utils";
 
 const loggedOutLinks = [
   { href: "#courses", label: "Courses" },
+  { href: "/student-stories", label: "Student Stories" },
   { href: "/pricing", label: "Pricing" },
   { href: "#testimonials", label: "Reviews" },
 ];
@@ -41,6 +43,7 @@ export function Header() {
   const loggedInLinks = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/dashboard/courses", label: "My Courses", icon: BookOpen },
+    { href: "/student-stories", label: "Student Stories", icon: Star },
     // Show "Account" for Ultra users, "Upgrade" for others
     ...(isUltra
       ? [{ href: "/pricing", label: "Account", icon: Sparkles }]

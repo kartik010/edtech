@@ -13,6 +13,74 @@
  */
 
 // Source: schema.json
+export type StudentStory = {
+  _id: string;
+  _type: "studentStory";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  studentName?: string;
+  courseTitle?: string;
+  quote?: string;
+  avatar?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  video?: MuxVideo;
+  featured?: boolean;
+  publishedAt?: string;
+};
+
+export type MuxVideo = {
+  _type: "mux.video";
+  asset?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "mux.videoAsset";
+  };
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type SponsorApplication = {
+  _id: string;
+  _type: "sponsorApplication";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  studentName?: string;
+  email?: string;
+  courseId?: string;
+  courseTitle?: string;
+  message?: string;
+  videoUrl?: string;
+  status?: "pending" | "accepted" | "rejected";
+  submittedAt?: string;
+};
+
 export type Enrollment = {
   _id: string;
   _type: "enrollment";
@@ -88,32 +156,6 @@ export type Lesson = {
     _type: "userScore";
     _key: string;
   }>;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type MuxVideo = {
-  _type: "mux.video";
-  asset?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "mux.videoAsset";
-  };
 };
 
 export type Slug = {
@@ -372,7 +414,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Enrollment | Lesson | SanityImageCrop | SanityImageHotspot | MuxVideo | Slug | Module | Course | Category | MuxVideoAsset | MuxAssetData | MuxStaticRenditions | MuxStaticRenditionFile | MuxPlaybackId | MuxTrack | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = StudentStory | MuxVideo | SanityImageCrop | SanityImageHotspot | SponsorApplication | Enrollment | Lesson | Slug | Module | Course | Category | MuxVideoAsset | MuxAssetData | MuxStaticRenditions | MuxStaticRenditionFile | MuxPlaybackId | MuxTrack | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: FEATURED_COURSES_QUERY
@@ -759,6 +801,25 @@ export type USER_ENROLLMENTS_QUERYResult = Array<{
   createdAt: string | null;
   paymentId: string | null;
 }>;
+// Variable: STUDENT_STORIES_QUERY
+// Query: *[  _type == "studentStory"  && featured == true] | order(publishedAt desc) {  _id,  studentName,  courseTitle,  quote,  publishedAt,  avatar {    asset-> {      url    }  },  video {    asset-> {      playbackId    }  }}
+export type STUDENT_STORIES_QUERYResult = Array<{
+  _id: string;
+  studentName: string | null;
+  courseTitle: string | null;
+  quote: string | null;
+  publishedAt: string | null;
+  avatar: {
+    asset: {
+      url: string | null;
+    } | null;
+  } | null;
+  video: {
+    asset: {
+      playbackId: string | null;
+    } | null;
+  } | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -776,5 +837,6 @@ declare module "@sanity/client" {
     "*[\n  _type == \"course\"\n  && $lessonId in modules[]->lessons[]->_id\n][0] {\n  _id,\n  title,\n  tier,\n  modules[]-> {\n    _id,\n    title,\n    lessons[]-> {\n      _id,\n      title\n    }\n  }\n}": LESSON_NAVIGATION_QUERYResult;
     "*[\n  _type == \"enrollment\"\n  && studentId == $studentId\n  && course._ref == $courseId\n][0] {\n  _id,\n  course->{\n    _id,\n    title,\n    slug\n  },\n  expiresAt,\n  createdAt\n}": ENROLLMENT_BY_STUDENT_AND_COURSE_QUERYResult;
     "*[\n  _type == \"enrollment\"\n  && studentId == $studentId\n] {\n  _id,\n  course->{\n    _id,\n    title,\n    slug,\n    description,\n    thumbnail {\n      asset-> {\n        _id,\n        url\n      }\n    }\n  },\n  amount,\n  expiresAt,\n  createdAt,\n  paymentId\n} | order(createdAt desc)": USER_ENROLLMENTS_QUERYResult;
+    "*[\n  _type == \"studentStory\"\n  && featured == true\n] | order(publishedAt desc) {\n  _id,\n  studentName,\n  courseTitle,\n  quote,\n  publishedAt,\n  avatar {\n    asset-> {\n      url\n    }\n  },\n  video {\n    asset-> {\n      playbackId\n    }\n  }\n}": STUDENT_STORIES_QUERYResult;
   }
 }

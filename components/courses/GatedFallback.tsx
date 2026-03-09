@@ -2,6 +2,7 @@
 
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { Loader2, Lock, Sparkles } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import { useState } from "react";
@@ -182,6 +183,17 @@ export function GatedFallback({
               </Button>
             </SignInButton>
           )}
+
+          {/* Sponsorship CTA */}
+          <p className="mt-5 text-sm text-zinc-500">
+            Can&apos;t afford it?{" "}
+            <Link
+              href={`/sponsor?courseId=${courseId}&courseTitle=${encodeURIComponent(courseTitle)}`}
+              className="text-fuchsia-400 hover:text-fuchsia-300 underline underline-offset-4 transition-colors"
+            >
+              Apply for a sponsorship →
+            </Link>
+          </p>
         </div>
       </div>
     </>

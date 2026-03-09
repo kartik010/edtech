@@ -318,3 +318,25 @@ export const USER_ENROLLMENTS_QUERY = defineQuery(`*[
   createdAt,
   paymentId
 } | order(createdAt desc)`);
+
+export const STUDENT_STORIES_QUERY = defineQuery(`*[
+  _type == "studentStory"
+  && featured == true
+] | order(publishedAt desc) {
+  _id,
+  studentName,
+  courseTitle,
+  quote,
+  publishedAt,
+  avatar {
+    asset-> {
+      url
+    }
+  },
+  video {
+    asset-> {
+      playbackId
+    }
+  }
+}`);
+
