@@ -184,7 +184,7 @@ export default async function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                tier: "Data Science",
+                tier: "Data Analytics",
                 icon: Rocket,
                 color: "emerald",
                 gradient: "from-emerald-500 to-teal-600",
@@ -198,7 +198,7 @@ export default async function Home() {
                 ],
               },
               {
-                tier: "AI / ML",
+                tier: "Prompt Engineering & Gen AI",
                 icon: Crown,
                 color: "violet",
                 gradient: "from-violet-500 to-fuchsia-600",
@@ -214,7 +214,7 @@ export default async function Home() {
                 popular: true,
               },
               {
-                tier: "Full Stack",
+                tier: "Digital Marketing",
                 icon: Trophy,
                 color: "cyan",
                 gradient: "from-cyan-400 to-blue-600",
