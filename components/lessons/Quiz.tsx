@@ -1,8 +1,8 @@
 "use client";
 
+import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { submitQuizAttempt } from "@/lib/actions";
 import type { LESSON_BY_SLUG_QUERYResult } from "@/sanity.types";
 

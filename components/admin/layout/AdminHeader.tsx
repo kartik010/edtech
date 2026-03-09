@@ -1,19 +1,18 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   BookOpen,
+  Code2,
+  ExternalLink,
   Layers,
+  LayoutDashboard,
+  Menu,
   PlayCircle,
   Tag,
-  LayoutDashboard,
-  Code2,
-  Menu,
-  ExternalLink,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import AdminLogOutButton from "./AdminLogOutButton";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +20,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import AdminLogOutButton from "./AdminLogOutButton";
 
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },

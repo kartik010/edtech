@@ -1,7 +1,7 @@
 "use client";
 
-import { MessageCircle, Sparkles, PanelRightClose } from "lucide-react";
 import { useAuth } from "@clerk/nextjs";
+import { MessageCircle, PanelRightClose, Sparkles } from "lucide-react";
 import { TutorChat } from "./TutorChat";
 import { TutorProvider, useTutor } from "./TutorContext";
 

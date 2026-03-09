@@ -1,24 +1,26 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Header } from "@/components/Header";
-import { CourseCard } from "@/components/courses";
+import { currentUser } from "@clerk/nextjs/server";
 import {
   ArrowRight,
-  Play,
   BookOpen,
-  Code2,
-  Rocket,
-  Crown,
   CheckCircle2,
-  Star,
-  Users,
-  Trophy,
-  Sparkles,
+  Code2,
+  Crown,
   LayoutDashboard,
+  Play,
+  Rocket,
+  Sparkles,
+  Star,
+  Trophy,
+  Users,
 } from "lucide-react";
+import Link from "next/link";
+import { CourseCard } from "@/components/courses";
+import { Header } from "@/components/Header";
+import { Button } from "@/components/ui/button";
 import { sanityFetch } from "@/sanity/lib/live";
 import { FEATURED_COURSES_QUERY, STATS_QUERY } from "@/sanity/lib/queries";
-import { currentUser } from "@clerk/nextjs/server";
+
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   // Fetch featured courses, stats, and check auth status
@@ -182,7 +184,7 @@ export default async function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                tier: "Free",
+                tier: "Data Science",
                 icon: Rocket,
                 color: "emerald",
                 gradient: "from-emerald-500 to-teal-600",
@@ -190,13 +192,13 @@ export default async function Home() {
                 borderColor: "border-emerald-500/20",
                 description: "Start your journey with foundational courses",
                 features: [
-                  "Core fundamentals",
+                  "Learn Python for data analysis",
                   "Community access",
                   "Basic projects",
                 ],
               },
               {
-                tier: "Pro",
+                tier: "AI / ML",
                 icon: Crown,
                 color: "violet",
                 gradient: "from-violet-500 to-fuchsia-600",
@@ -204,7 +206,7 @@ export default async function Home() {
                 borderColor: "border-violet-500/30",
                 description: "Level up with advanced, production-ready content",
                 features: [
-                  "All Free content",
+                  "Learn React",
                   "Advanced courses",
                   "Priority support",
                   "Certificates",
@@ -212,7 +214,7 @@ export default async function Home() {
                 popular: true,
               },
               {
-                tier: "Ultra",
+                tier: "Full Stack",
                 icon: Trophy,
                 color: "cyan",
                 gradient: "from-cyan-400 to-blue-600",
@@ -221,7 +223,7 @@ export default async function Home() {
                 description:
                   "Unlock the real gems - AI tutor & exclusive content",
                 features: [
-                  "Everything in Pro",
+                  "Learn React Native",
                   "AI Learning Assistant",
                   "Exclusive content",
                   "1-on-1 sessions",
@@ -280,8 +282,8 @@ export default async function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {courses.map((course) => (
               <CourseCard
-                key={course.slug!.current!}
-                slug={{ current: course.slug!.current! }}
+                key={course.slug?.current || ""}
+                slug={{ current: course.slug?.current || "" }}
                 title={course.title}
                 description={course.description}
                 tier={course.tier}

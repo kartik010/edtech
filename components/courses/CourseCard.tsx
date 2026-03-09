@@ -1,10 +1,10 @@
 "use client";
 
+import { CheckCircle2, Layers, Lock, Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Lock, Play, Layers, CheckCircle2 } from "lucide-react";
-import { TIER_STYLES } from "@/lib/constants";
 import { Progress } from "@/components/ui/progress";
+import { TIER_STYLES } from "@/lib/constants";
 import type { DASHBOARD_COURSES_QUERYResult } from "@/sanity.types";
 
 // Infer Sanity course fields from query result
@@ -25,6 +25,7 @@ export interface CourseCardProps
   completedLessonCount?: number | null;
   isCompleted?: boolean;
   isLocked?: boolean;
+  isEnrolled?: boolean;
   showProgress?: boolean;
 }
 
@@ -40,6 +41,7 @@ export function CourseCard({
   completedLessonCount = 0,
   isCompleted = false,
   isLocked = false,
+  isEnrolled = false,
   showProgress = false,
 }: CourseCardProps) {
   const displayTier = tier ?? "free";
@@ -76,11 +78,13 @@ export function CourseCard({
               <CheckCircle2 className="w-3.5 h-3.5" />
               Completed
             </div>
+          ) : isEnrolled ? (
+            <div className="absolute top-3 right-3 px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-500/90 text-white">
+              Enrolled
+            </div>
           ) : (
-            <div
-              className={`absolute top-3 right-3 px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wide ${styles.badge}`}
-            >
-              {displayTier}
+            <div className="absolute top-3 right-3 px-2.5 py-1 rounded-md text-xs font-semibold bg-zinc-900/90 text-white border border-zinc-700 shadow-md">
+              $59
             </div>
           )}
 

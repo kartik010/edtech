@@ -1,7 +1,8 @@
-import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
+import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { LessonPageContent } from "@/components/lessons";
+import { hasCourseAccess } from "@/lib/course-access";
 import { sanityFetch } from "@/sanity/lib/live";
 import { LESSON_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 
@@ -20,6 +21,14 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
   if (!lesson) {
     notFound();
+  }
+
+  let isEnrolled = false;
+  if (lesson.courses && lesson.courses.length > 0) {
+    const accessResults = await Promise.all(
+      lesson.courses.map((course) => hasCourseAccess(course._id)),
+    );
+    isEnrolled = accessResults.some((hasAccess) => hasAccess);
   }
 
   return (
@@ -50,7 +59,11 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
       {/* Main Content */}
       <main className="relative z-10 px-6 lg:px-12 py-8 max-w-7xl mx-auto">
-        <LessonPageContent lesson={lesson} userId={userId} />
+        <LessonPageContent
+          lesson={lesson}
+          userId={userId}
+          isEnrolled={isEnrolled}
+        />
       </main>
     </div>
   );

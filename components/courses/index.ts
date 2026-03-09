@@ -1,8 +1,7 @@
 export { CourseCard, type CourseCardProps } from "./CourseCard";
-export { CourseList, type CourseListCourse } from "./CourseList";
-export { TierFilterTabs, type TierFilter } from "./TierFilterTabs";
-// export { CourseHero } from "./CourseHero";
-export { ModuleAccordion } from "./ModuleAccordion";
-export { GatedFallback } from "./GatedFallback";
 export { CourseCompleteButton } from "./CourseCompleteButton";
 export { CourseContent } from "./CourseContent";
+export { CourseList, type CourseListCourse } from "./CourseList";
+export { GatedFallback } from "./GatedFallback";
+// export { CourseHero } from "./CourseHero";
+export { ModuleAccordion } from "./ModuleAccordion";

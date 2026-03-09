@@ -1,16 +1,15 @@
+import { CheckCircle2, Code2, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { PricingTable } from "@clerk/nextjs";
-import {
-  ArrowLeft,
-  CheckCircle2,
-  Sparkles,
-  Loader2,
-  Code2,
-} from "lucide-react";
-import { TIER_FEATURES, getTierColorClasses } from "@/lib/constants";
 import { Header } from "@/components/Header";
+import { getTierColorClasses } from "@/lib/constants";
+import { sanityFetch } from "@/sanity/lib/live";
+import { ALL_COURSES_QUERY } from "@/sanity/lib/queries";
 
-export default function PricingPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PricingPage() {
+  const { data: courses } = await sanityFetch({ query: ALL_COURSES_QUERY });
+
   return (
     <div className="min-h-screen bg-[#09090b] text-white overflow-hidden">
       {/* Animated gradient mesh background */}
@@ -60,124 +59,60 @@ export default function PricingPage() {
           </p>
         </div>
 
-        {/* What's Included Overview */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {TIER_FEATURES.map((plan) => {
-            const colorClasses = getTierColorClasses(plan.color);
+        {/* Custom Pricing Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {courses.map((course) => {
+            const displayTier = course.tier ?? "free";
+            const _colorClasses = getTierColorClasses(
+              displayTier === "free"
+                ? "emerald"
+                : displayTier === "pro"
+                  ? "violet"
+                  : displayTier === "ultra"
+                    ? "cyan"
+                    : "emerald",
+            );
+
             return (
               <div
-                key={plan.tier}
-                className={`p-6 rounded-xl bg-zinc-900/30 border ${colorClasses.border}`}
+                key={course._id}
+                className="relative flex flex-col p-8 rounded-2xl bg-zinc-900/50 border border-zinc-800 hover:border-violet-500/30 transition-colors"
               >
-                <h3 className={`text-lg font-bold mb-4 ${colorClasses.text}`}>
-                  {plan.tier} includes:
-                </h3>
-                <ul className="space-y-3">
-                  {plan.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className="flex items-start gap-2 text-sm text-zinc-300"
-                    >
-                      <CheckCircle2
-                        className={`w-4 h-4 mt-0.5 shrink-0 ${colorClasses.text}`}
-                      />
-                      {feature}
-                    </li>
-                  ))}
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold mb-2">{course.title}</h3>
+                  <p className="text-zinc-400 min-h-12 mb-6">
+                    {course.description || "Start learning today."}
+                  </p>
+                  <div className="flex items-baseline gap-2 mb-6">
+                    <span className="text-5xl font-black">$59</span>
+                    <span className="text-zinc-400">/ lifetime</span>
+                  </div>
+                </div>
+
+                <ul className="space-y-4 flex-1 mb-8">
+                  <li className="flex items-start gap-3 text-zinc-300">
+                    <CheckCircle2 className="w-5 h-5 mt-0.5 text-emerald-400 shrink-0" />
+                    Full access to {course.title} video lessons
+                  </li>
+                  <li className="flex items-start gap-3 text-zinc-300">
+                    <CheckCircle2 className="w-5 h-5 mt-0.5 text-emerald-400 shrink-0" />
+                    Quizzes & Assignments
+                  </li>
+                  <li className="flex items-start gap-3 text-zinc-300">
+                    <CheckCircle2 className="w-5 h-5 mt-0.5 text-emerald-400 shrink-0" />
+                    365 days of course updates
+                  </li>
                 </ul>
+
+                <Link
+                  href={`/courses/${course.slug?.current}`}
+                  className="w-full py-4 rounded-xl font-bold text-center bg-white text-black hover:bg-zinc-200 transition-colors"
+                >
+                  View Course
+                </Link>
               </div>
             );
           })}
-        </div>
-
-        {/* Clerk Pricing Table */}
-        <div className="clerk-pricing-wrapper rounded-2xl bg-zinc-900/50 border border-zinc-800 p-6 md:p-10">
-          <PricingTable
-            appearance={{
-              elements: {
-                pricingTable: {
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                  gap: "1.5rem",
-                },
-                pricingTableCard: {
-                  borderRadius: "1rem",
-                  border: "1px solid rgba(139, 92, 246, 0.2)",
-                  boxShadow: "0 10px 40px rgba(139, 92, 246, 0.1)",
-                  transition: "all 0.3s ease",
-                  overflow: "hidden",
-                  background: "rgba(24, 24, 27, 0.8)",
-                  backdropFilter: "blur(10px)",
-                },
-                pricingTableCardHeader: {
-                  background:
-                    "linear-gradient(135deg, rgb(139 92 246), rgb(192 132 252))",
-                  color: "white",
-                  borderRadius: "1rem 1rem 0 0",
-                  padding: "2rem",
-                },
-                pricingTableCardTitle: {
-                  fontSize: "1.5rem",
-                  fontWeight: "800",
-                  color: "white",
-                  marginBottom: "0.25rem",
-                },
-                pricingTableCardDescription: {
-                  fontSize: "0.9rem",
-                  color: "rgba(255, 255, 255, 0.85)",
-                  fontWeight: "500",
-                },
-                pricingTableCardFee: {
-                  color: "white",
-                  fontWeight: "800",
-                  fontSize: "2.5rem",
-                },
-                pricingTableCardFeePeriod: {
-                  color: "rgba(255, 255, 255, 0.8)",
-                  fontSize: "1rem",
-                },
-                pricingTableCardBody: {
-                  padding: "1.5rem",
-                  background: "rgba(24, 24, 27, 0.9)",
-                },
-                pricingTableCardFeatures: {
-                  marginTop: "1rem",
-                  gap: "0.75rem",
-                },
-                pricingTableCardFeature: {
-                  fontSize: "0.9rem",
-                  padding: "0.5rem 0",
-                  fontWeight: "500",
-                  color: "rgba(255, 255, 255, 0.8)",
-                },
-                pricingTableCardButton: {
-                  marginTop: "1.5rem",
-                  borderRadius: "0.75rem",
-                  fontWeight: "700",
-                  padding: "0.875rem 2rem",
-                  transition: "all 0.2s ease",
-                  fontSize: "1rem",
-                  background:
-                    "linear-gradient(135deg, rgb(139 92 246), rgb(192 132 252))",
-                  border: "none",
-                  boxShadow: "0 4px 15px rgba(139, 92, 246, 0.3)",
-                },
-                pricingTableCardPeriodToggle: {
-                  color: "white",
-                },
-              },
-            }}
-            fallback={
-              <div className="flex items-center justify-center py-20">
-                <div className="text-center space-y-4">
-                  <Loader2 className="h-12 w-12 animate-spin text-violet-500 mx-auto" />
-                  <p className="text-zinc-400 text-lg font-medium">
-                    Loading pricing options...
-                  </p>
-                </div>
-              </div>
-            }
-          />
         </div>
 
         {/* FAQ or extra info */}

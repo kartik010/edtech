@@ -1,47 +1,22 @@
 import { auth } from "@clerk/nextjs/server";
-import type { Tier } from "@/lib/constants";
+import { sanityFetch } from "@/sanity/lib/live";
+import { ENROLLMENT_BY_STUDENT_AND_COURSE_QUERY } from "@/sanity/lib/queries";
 
 /**
- * Check if the current user has access to content at the specified tier.
- * Uses Clerk's has() to check plan subscriptions.
- *
- * - Free content (or no tier specified): accessible to everyone
- * - Pro content: requires pro or ultra plan
- * - Ultra content: requires ultra plan
+ * Check if the current user has access to a specific course.
+ * Uses Sanity query to verify valid, unexpired enrollment.
  */
-export async function hasAccessToTier(
-  requiredTier: Tier | null | undefined,
-): Promise<boolean> {
-  // Free content or no tier = accessible to everyone
-  if (!requiredTier || requiredTier === "free") return true;
-  const { has } = await auth();
+export async function hasCourseAccess(courseId: string): Promise<boolean> {
+  const { userId } = await auth();
+  if (!userId) return false;
 
-  console.log("requiredTier", requiredTier);
-  console.log("has ultra", has({ plan: "ultra" }));
-  console.log("has pro", has({ plan: "pro" }));
-  console.log("has free", has({ plan: "free" }));
+  const { data: enrollment } = await sanityFetch({
+    query: ENROLLMENT_BY_STUDENT_AND_COURSE_QUERY,
+    params: { studentId: userId, courseId },
+  });
 
-  // Ultra content requires ultra plan
-  if (requiredTier === "ultra") {
-    return has({ plan: "ultra" });
-  }
+  if (!enrollment || !enrollment.expiresAt) return false;
 
-  // Pro content requires pro OR ultra plan
-  if (requiredTier === "pro") {
-    return has({ plan: "pro" }) || has({ plan: "ultra" });
-  }
-
-  return false;
-}
-
-/**
- * Get the user's current subscription tier.
- */
-export async function getUserTier(): Promise<Tier> {
-  const { has } = await auth();
-
-  if (has({ plan: "ultra" })) return "ultra";
-  if (has({ plan: "pro" })) return "pro";
-
-  return "free";
+  const isExpired = new Date(enrollment.expiresAt) < new Date();
+  return !isExpired;
 }

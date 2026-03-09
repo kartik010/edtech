@@ -1,18 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import { Search } from "lucide-react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { CourseCard } from "./CourseCard";
-import { TierFilterTabs, type TierFilter } from "./TierFilterTabs";
-import { useUserTier, hasTierAccess } from "@/lib/hooks/use-user-tier";
 import type { DASHBOARD_COURSES_QUERYResult } from "@/sanity.types";
+import { CourseCard } from "./CourseCard";
 
 // Infer course type from Sanity query result
 export type CourseListCourse = DASHBOARD_COURSES_QUERYResult[number];
 
 interface CourseListProps {
   courses: CourseListCourse[];
+  enrolledCourseIds?: string[];
   showFilters?: boolean;
   showSearch?: boolean;
   emptyMessage?: string;
@@ -20,22 +19,15 @@ interface CourseListProps {
 
 export function CourseList({
   courses,
+  enrolledCourseIds = [],
   showFilters = true,
   showSearch = true,
   emptyMessage = "No courses found",
 }: CourseListProps) {
-  const userTier = useUserTier();
-  const [tierFilter, setTierFilter] = useState<TierFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Filter courses based on tier and search query
+  // Filter courses based on search query
   const filteredCourses = courses.filter((course) => {
-    // Tier filter
-    if (tierFilter !== "all" && course.tier !== tierFilter) {
-      return false;
-    }
-
-    // Search filter
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       const title = course.title?.toLowerCase() ?? "";
@@ -53,13 +45,6 @@ export function CourseList({
       {/* Filters and Search */}
       {(showFilters || showSearch) && (
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          {showFilters && (
-            <TierFilterTabs
-              activeFilter={tierFilter}
-              onFilterChange={setTierFilter}
-            />
-          )}
-
           {showSearch && (
             <div className="relative w-full sm:w-72">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
@@ -88,7 +73,8 @@ export function CourseList({
               thumbnail={course.thumbnail}
               moduleCount={course.moduleCount}
               lessonCount={course.lessonCount}
-              isLocked={!hasTierAccess(userTier, course.tier)}
+              isLocked={!enrolledCourseIds.includes(course._id)}
+              isEnrolled={enrolledCourseIds.includes(course._id)}
             />
           ))}
         </div>
@@ -98,11 +84,10 @@ export function CourseList({
             <Search className="w-6 h-6 text-zinc-500" />
           </div>
           <p className="text-zinc-400">{emptyMessage}</p>
-          {(tierFilter !== "all" || searchQuery) && (
+          {searchQuery && (
             <button
               type="button"
               onClick={() => {
-                setTierFilter("all");
                 setSearchQuery("");
               }}
               className="mt-2 text-sm text-violet-400 hover:text-violet-300 transition-colors"

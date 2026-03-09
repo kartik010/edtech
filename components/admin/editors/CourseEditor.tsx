@@ -1,19 +1,19 @@
 "use client";
 
-import { Suspense } from "react";
 import type { DocumentHandle } from "@sanity/sdk-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useDocument, useEditDocument } from "@sanity/sdk-react";
-import { SelectInput } from "@/components/admin/inputs/SelectInput";
-import { SwitchInput } from "@/components/admin/inputs/SwitchInput";
-import { ReferenceInput } from "@/components/admin/inputs/ReferenceInput";
-import { ModuleAccordionInput } from "@/components/admin/inputs/ModuleAccordionInput";
-import { ImageInput } from "@/components/admin/inputs/ImageInput";
-import { SlugInput } from "@/components/admin/inputs/SlugInput";
+import { Suspense } from "react";
 import { DocumentActions } from "@/components/admin/documents/DocumentActions";
 import { OpenInStudio } from "@/components/admin/documents/OpenInStudio";
+import { ImageInput } from "@/components/admin/inputs/ImageInput";
+import { ModuleAccordionInput } from "@/components/admin/inputs/ModuleAccordionInput";
+import { ReferenceInput } from "@/components/admin/inputs/ReferenceInput";
+import { SelectInput } from "@/components/admin/inputs/SelectInput";
+import { SlugInput } from "@/components/admin/inputs/SlugInput";
+import { SwitchInput } from "@/components/admin/inputs/SwitchInput";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 import { TIER_OPTIONS } from "@/lib/constants";
 
 interface CourseEditorProps {

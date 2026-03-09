@@ -144,16 +144,16 @@
 /* Clerk Pricing Table text styling */
 .cl-pricingTableCardPeriodToggle label,
 .cl-pricingTableCardPeriodToggle span {
-  color: white !important;
+  color: white;
 }
 
 .cl-pricingTableCardHeader,
 .cl-pricingTableCardHeader * {
-  color: white !important;
+  color: white;
 }
 
 .cl-pricingTableCardTitle {
-  text-transform: capitalize !important;
+  text-transform: capitalize;
 }
 
 /* Clerk Pricing Table responsive overrides */
@@ -163,7 +163,7 @@
 
 @media (max-width: 750px) {
   .cl-pricingTable {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
     max-width: 400px;
     margin: 0 auto;
   }
@@ -171,12 +171,12 @@
 
 @media (min-width: 750px) {
   .cl-pricingTable {
-    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 /* Clerk modal z-index fixes */
 div[role="dialog"],
 div[role="alertdialog"] {
-  z-index: 99999 !important;
+  z-index: 99999;
 }

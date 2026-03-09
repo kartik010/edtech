@@ -1,15 +1,14 @@
 "use client";
 
-import { Suspense } from "react";
 import {
-  useDocument,
-  useEditDocument,
-  useDocuments,
-  useDocumentProjection,
   type DocumentHandle,
+  useDocument,
+  useDocumentProjection,
+  useDocuments,
+  useEditDocument,
 } from "@sanity/sdk-react";
+import { Suspense } from "react";
 import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
   SelectContent,
@@ -17,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ReferenceInputProps extends DocumentHandle {
   path: string;

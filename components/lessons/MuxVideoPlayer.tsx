@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import MuxPlayer from "@mux/mux-player-react";
 import { VideoOff } from "lucide-react";
+import { useEffect, useState } from "react";
 import { getMuxSignedTokens } from "@/lib/actions/mux";
 
 interface MuxVideoPlayerProps {

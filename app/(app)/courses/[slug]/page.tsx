@@ -1,7 +1,8 @@
-import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import { Header } from "@/components/Header";
+import { notFound } from "next/navigation";
 import { CourseContent } from "@/components/courses";
+import { Header } from "@/components/Header";
+import { hasCourseAccess } from "@/lib/course-access";
 import { sanityFetch } from "@/sanity/lib/live";
 import { COURSE_WITH_MODULES_QUERY } from "@/sanity/lib/queries";
 
@@ -21,6 +22,8 @@ export default async function CoursePage({ params }: CoursePageProps) {
   if (!course) {
     notFound();
   }
+
+  const isEnrolled = await hasCourseAccess(course._id);
 
   return (
     <div className="min-h-screen bg-[#09090b] text-white overflow-hidden">
@@ -50,7 +53,11 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
       {/* Main Content */}
       <main className="relative z-10 px-6 lg:px-12 py-12 max-w-7xl mx-auto">
-        <CourseContent course={course} userId={userId} />
+        <CourseContent
+          course={course}
+          userId={userId}
+          isEnrolled={isEnrolled}
+        />
       </main>
     </div>
   );

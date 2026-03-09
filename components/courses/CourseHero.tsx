@@ -1,6 +1,6 @@
+import { ArrowLeft, BookOpen, Play, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, BookOpen, Play, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { TIER_STYLES } from "@/lib/constants";
 import type { COURSE_WITH_MODULES_QUERYResult } from "@/sanity.types";
@@ -63,9 +63,6 @@ export function CourseHero({
         {/* Course Info */}
         <div className="flex-1">
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <Badge className={`${styles.text} ${styles.border} bg-transparent`}>
-              {displayTier.toUpperCase()}
-            </Badge>
             {category?.title && (
               <Badge
                 variant="outline"

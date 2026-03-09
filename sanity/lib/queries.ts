@@ -280,3 +280,41 @@ export const LESSON_NAVIGATION_QUERY = defineQuery(`*[
     }
   }
 }`);
+
+export const ENROLLMENT_BY_STUDENT_AND_COURSE_QUERY = defineQuery(`*[
+  _type == "enrollment"
+  && studentId == $studentId
+  && course._ref == $courseId
+][0] {
+  _id,
+  course->{
+    _id,
+    title,
+    slug
+  },
+  expiresAt,
+  createdAt
+}`);
+
+export const USER_ENROLLMENTS_QUERY = defineQuery(`*[
+  _type == "enrollment"
+  && studentId == $studentId
+] {
+  _id,
+  course->{
+    _id,
+    title,
+    slug,
+    description,
+    thumbnail {
+      asset-> {
+        _id,
+        url
+      }
+    }
+  },
+  amount,
+  expiresAt,
+  createdAt,
+  paymentId
+} | order(createdAt desc)`);

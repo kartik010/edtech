@@ -1,7 +1,7 @@
 "use client";
 
 import type { UIMessage } from "ai";
-import { Sparkles, User, Search, Loader2, CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Loader2, Search, Sparkles, User } from "lucide-react";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import { useTutor } from "./TutorContext";

@@ -1,17 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useDocumentProjection } from "@sanity/sdk-react";
+import { ChevronRight, FileText, Link2, Play, Video } from "lucide-react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import {
-  ChevronRight,
-  Play,
-  Video,
-  FileText,
-  Link2,
-  GripVertical,
-} from "lucide-react";
-import type { LessonItemProps, LessonData } from "./types";
+import type { LessonData, LessonItemProps } from "./types";
 
 export function LessonItem({
   documentId,

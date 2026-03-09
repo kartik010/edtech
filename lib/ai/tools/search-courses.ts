@@ -1,6 +1,6 @@
 import { tool } from "ai";
-import { z } from "zod";
 import { defineQuery } from "next-sanity";
+import { z } from "zod";
 import { sanityFetch } from "@/sanity/lib/live";
 
 // Simple but effective search query - searches all courses and filters in JS for reliability

@@ -1,12 +1,13 @@
-import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
+import { BookOpen, Sparkles } from "lucide-react";
 import { redirect } from "next/navigation";
-import { BookOpen, Sparkles, ArrowRight } from "lucide-react";
-import { Header } from "@/components/Header";
 import { CourseList } from "@/components/courses";
+import { Header } from "@/components/Header";
 import { sanityFetch } from "@/sanity/lib/live";
-import { DASHBOARD_COURSES_QUERY } from "@/sanity/lib/queries";
-import { getUserTier } from "@/lib/course-access";
+import {
+  DASHBOARD_COURSES_QUERY,
+  USER_ENROLLMENTS_QUERY,
+} from "@/sanity/lib/queries";
 
 export default async function DashboardPage() {
   const user = await currentUser();
@@ -15,13 +16,25 @@ export default async function DashboardPage() {
     redirect("/");
   }
 
-  const [{ data: courses }, userTier] = await Promise.all([
+  const [{ data: courses }, { data: enrollments }] = await Promise.all([
     sanityFetch({
       query: DASHBOARD_COURSES_QUERY,
       params: { userId: user.id },
     }),
-    getUserTier(),
+    sanityFetch({
+      query: USER_ENROLLMENTS_QUERY,
+      params: { studentId: user.id },
+    }),
   ]);
+
+  const now = new Date();
+  const validEnrollments = enrollments.filter(
+    (e: { expiresAt: string | null; course: { _id: string } | null }) =>
+      e.expiresAt && new Date(e.expiresAt) > now,
+  );
+  const enrolledCourseIds = validEnrollments
+    .map((e: { course: { _id: string } | null }) => e.course?._id)
+    .filter(Boolean) as string[];
 
   const firstName = user.firstName ?? user.username ?? "there";
 
@@ -113,11 +126,7 @@ export default async function DashboardPage() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 shrink-0">
               <Sparkles className="w-4 h-4 text-violet-400" />
               <span className="text-sm text-violet-300">
-                {userTier === "ultra"
-                  ? "Ultra Member"
-                  : userTier === "pro"
-                    ? "Pro Member"
-                    : "Free Member"}
+                {enrolledCourseIds.length} Active Courses
               </span>
             </div>
           </div>
@@ -199,32 +208,11 @@ export default async function DashboardPage() {
                 <Sparkles className="w-5 h-5 text-emerald-400" />
               </div>
               <div>
-                <p className="text-2xl font-bold capitalize">{userTier}</p>
-                <p className="text-sm text-zinc-500">Current Plan</p>
+                <p className="text-2xl font-bold">{enrolledCourseIds.length}</p>
+                <p className="text-sm text-zinc-500">Purchased Courses</p>
               </div>
             </div>
           </div>
-
-          {userTier !== "ultra" && (
-            <Link
-              href="/pricing"
-              className="p-6 rounded-xl bg-gradient-to-br from-violet-600/20 to-fuchsia-600/20 border border-violet-500/30 hover:border-violet-500/50 transition-colors group lg:col-span-1"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-lg font-semibold text-white group-hover:text-violet-300 transition-colors">
-                    Upgrade to {userTier === "free" ? "Pro" : "Ultra"}
-                  </p>
-                  <p className="text-sm text-zinc-400">
-                    {userTier === "pro"
-                      ? "Get AI Learning Assistant & exclusive content"
-                      : "Unlock more courses & features"}
-                  </p>
-                </div>
-                <ArrowRight className="w-5 h-5 text-violet-400 group-hover:translate-x-1 transition-transform" />
-              </div>
-            </Link>
-          )}
         </div>
 
         {/* Course List */}
@@ -232,6 +220,7 @@ export default async function DashboardPage() {
           <h2 className="text-2xl font-bold mb-6">All Courses</h2>
           <CourseList
             courses={courses}
+            enrolledCourseIds={enrolledCourseIds}
             showFilters
             showSearch
             emptyMessage="No courses available yet. Check back soon!"

@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   SignedIn,
   SignedOut,
@@ -9,6 +7,16 @@ import {
   UserButton,
   useAuth,
 } from "@clerk/nextjs";
+import {
+  BookOpen,
+  Code2,
+  LayoutDashboard,
+  Menu,
+  Play,
+  Sparkles,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,14 +24,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Code2,
-  Play,
-  LayoutDashboard,
-  BookOpen,
-  Sparkles,
-  Menu,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const loggedOutLinks = [

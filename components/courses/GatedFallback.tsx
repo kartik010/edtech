@@ -1,7 +1,12 @@
-import Link from "next/link";
-import { Lock, Sparkles, CheckCircle2 } from "lucide-react";
+"use client";
+
+import { SignInButton, useUser } from "@clerk/nextjs";
+import { Loader2, Lock, Sparkles } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Script from "next/script";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { TIER_FEATURES, TIER_STYLES, type Tier } from "@/lib/constants";
+import { TIER_STYLES, type Tier } from "@/lib/constants";
 
 // Muted gradient variants for background overlays
 const TIER_GRADIENT_MUTED: Record<Tier, string> = {
@@ -11,88 +16,174 @@ const TIER_GRADIENT_MUTED: Record<Tier, string> = {
 };
 
 interface GatedFallbackProps {
+  courseId: string;
+  courseTitle: string;
   requiredTier: Tier | null | undefined;
 }
 
-export function GatedFallback({ requiredTier }: GatedFallbackProps) {
+export function GatedFallback({
+  courseId,
+  courseTitle,
+  requiredTier,
+}: GatedFallbackProps) {
+  const [isPending, setIsPending] = useState(false);
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+
   const displayTier = requiredTier ?? "pro";
   const styles = TIER_STYLES[displayTier];
   const gradientMuted = TIER_GRADIENT_MUTED[displayTier];
 
-  // Get features for the required tier
-  const tierFeatures = TIER_FEATURES.find(
-    (t) => t.tier.toLowerCase() === displayTier,
-  );
+  const handlePurchase = async () => {
+    setIsPending(true);
+    try {
+      const res = await fetch("/api/razorpay/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseId }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Failed to create order");
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Ensure this is set in .env.local
+        amount: data.amount,
+        currency: data.currency,
+        name: "Acme EdTech",
+        description: `Lifetime access to ${courseTitle}`,
+        order_id: data.orderId,
+        handler: async (response: {
+          razorpay_order_id: string;
+          razorpay_payment_id: string;
+          razorpay_signature: string;
+        }) => {
+          try {
+            // Verify Payment
+            const verifyRes = await fetch("/api/razorpay/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                courseId,
+                studentId: user?.id,
+                amount: data.amount,
+              }),
+            });
+            if (verifyRes.ok) {
+              router.refresh();
+            } else {
+              console.error("Payment verification failed on server");
+            }
+          } catch (err) {
+            console.error(err);
+          } finally {
+            setIsPending(false);
+          }
+        },
+        prefill: {
+          name: user?.fullName || "Student",
+          email: user?.primaryEmailAddress?.emailAddress,
+        },
+        theme: {
+          color: "#8b5cf6",
+        },
+      };
+
+      const paymentObject = new (
+        window as unknown as {
+          Razorpay: new (
+            opts: unknown,
+          ) => {
+            open: () => void;
+            on: (event: string, cb: (res: { error: unknown }) => void) => void;
+          };
+        }
+      ).Razorpay(options);
+      paymentObject.open();
+
+      // Handle failed payment closing
+      paymentObject.on("payment.failed", (response: { error: unknown }) => {
+        console.error("Payment failed", response.error);
+        setIsPending(false);
+      });
+    } catch (e) {
+      console.error(e);
+      setIsPending(false);
+    }
+  };
 
   return (
-    <div
-      className={`relative rounded-2xl bg-gradient-to-br ${gradientMuted} border ${styles.border} p-8 md:p-12 overflow-hidden`}
-    >
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-[#09090b]/80" />
+    <>
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
       <div
-        className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${gradientMuted} rounded-full blur-[100px] opacity-50`}
-      />
-
-      <div className="relative z-10 max-w-xl mx-auto text-center">
-        {/* Lock icon */}
+        className={`relative rounded-2xl bg-gradient-to-br ${gradientMuted} border ${styles.border} p-8 md:p-12 overflow-hidden`}
+      >
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-[#09090b]/80" />
         <div
-          className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-zinc-800/50 border ${styles.border} mb-6`}
-        >
-          <Lock className={`w-7 h-7 ${styles.text}`} />
-        </div>
+          className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${gradientMuted} rounded-full blur-[100px] opacity-50`}
+        />
 
-        {/* Title */}
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">
-          Upgrade to{" "}
-          <span className={styles.text}>
-            {displayTier.charAt(0).toUpperCase() + displayTier.slice(1)}
-          </span>{" "}
-          to unlock this content
-        </h2>
-
-        {/* Description */}
-        <p className="text-zinc-400 mb-8 max-w-md mx-auto">
-          This course requires a {displayTier} subscription. Upgrade your plan
-          to access this content and unlock all the features below.
-        </p>
-
-        {/* Features list */}
-        {tierFeatures && (
-          <div className="bg-zinc-900/50 rounded-xl p-6 mb-8 text-left">
-            <div className="flex items-center gap-2 mb-4">
-              <Sparkles className={`w-4 h-4 ${styles.text}`} />
-              <span className={`text-sm font-semibold ${styles.text}`}>
-                {tierFeatures.tier} includes:
-              </span>
-            </div>
-            <ul className="space-y-3">
-              {tierFeatures.features.map((feature) => (
-                <li
-                  key={feature}
-                  className="flex items-start gap-2 text-sm text-zinc-300"
-                >
-                  <CheckCircle2
-                    className={`w-4 h-4 mt-0.5 shrink-0 ${styles.text}`}
-                  />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* CTA Button */}
-        <Link href="/pricing">
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8"
+        <div className="relative z-10 max-w-xl mx-auto text-center">
+          {/* Lock icon */}
+          <div
+            className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-zinc-800/50 border ${styles.border} mb-6`}
           >
-            <Sparkles className="w-4 h-4 mr-2" />
-            View Pricing Plans
-          </Button>
-        </Link>
+            <Lock className={`w-7 h-7 ${styles.text}`} />
+          </div>
+
+          {/* Title */}
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            Enroll in <span className={styles.text}>{courseTitle}</span> to
+            unlock this content
+          </h2>
+
+          {/* Description */}
+          <p className="text-zinc-400 mb-8 max-w-md mx-auto">
+            This module is part of the premium course curriculum. Secure your
+            lifetime access today for just $59.
+          </p>
+
+          {/* CTA Button */}
+          {!isLoaded ? (
+            <Button
+              size="lg"
+              disabled
+              className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8"
+            >
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Checking access...
+            </Button>
+          ) : user ? (
+            <Button
+              size="lg"
+              disabled={isPending}
+              onClick={handlePurchase}
+              className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8"
+            >
+              {isPending ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Sparkles className="w-4 h-4 mr-2" />
+              )}
+              {isPending ? "Processing..." : "Purchase Course  —  $59"}
+            </Button>
+          ) : (
+            <SignInButton mode="modal">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8"
+              >
+                <Lock className="w-4 h-4 mr-2" />
+                Sign in to Purchase
+              </Button>
+            </SignInButton>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

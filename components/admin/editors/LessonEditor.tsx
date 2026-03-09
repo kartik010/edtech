@@ -1,16 +1,16 @@
 "use client";
 
-import { Suspense } from "react";
 import type { DocumentHandle } from "@sanity/sdk-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useDocument, useEditDocument } from "@sanity/sdk-react";
+import { Suspense } from "react";
 import { DocumentActions } from "@/components/admin/documents/DocumentActions";
 import { OpenInStudio } from "@/components/admin/documents/OpenInStudio";
-import { SlugInput } from "@/components/admin/inputs/SlugInput";
 import { MuxVideoInput } from "@/components/admin/inputs/MuxVideoInput";
 import { PortableTextInput } from "@/components/admin/inputs/PortableTextInput";
+import { SlugInput } from "@/components/admin/inputs/SlugInput";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 
 interface LessonEditorProps {
   documentId: string;

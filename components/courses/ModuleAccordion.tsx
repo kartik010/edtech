@@ -1,7 +1,7 @@
 "use client";
 
+import { BookOpen, CheckCircle2, Circle, Play } from "lucide-react";
 import Link from "next/link";
-import { Play, CheckCircle2, Circle, BookOpen } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -106,14 +106,14 @@ export function ModuleAccordion({ modules, userId }: ModuleAccordionProps) {
 
               <AccordionContent className="px-5 pb-4 pt-2">
                 <div className="ml-4 border-l-2 border-zinc-800 pl-3 space-y-1">
-                  {module.lessons?.map((lesson, lessonIndex) => {
+                  {module.lessons?.map((lesson, _lessonIndex) => {
                     const completed = isLessonCompleted(lesson);
                     const hasVideo = !!lesson.video?.asset?.playbackId;
 
                     return (
                       <Link
                         key={lesson._id}
-                        href={`/lessons/${lesson.slug!.current!}`}
+                        href={`/lessons/${lesson.slug?.current || ""}`}
                         className="flex items-center gap-2.5 pl-2 pr-3 py-2 rounded-lg hover:bg-zinc-800/50 transition-colors group"
                       >
                         {completed ? (

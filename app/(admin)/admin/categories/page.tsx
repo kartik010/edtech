@@ -1,7 +1,7 @@
 "use client";
 
 import { DocumentList } from "@/components/admin/documents/DocumentList";
-import { projectId, dataset } from "@/sanity/env";
+import { dataset, projectId } from "@/sanity/env";
 
 export default function CategoriesPage() {
   return (

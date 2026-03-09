@@ -1,25 +1,25 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import { CourseHero } from "./CourseHero";
-import { ModuleAccordion } from "./ModuleAccordion";
-import { CourseCompleteButton } from "./CourseCompleteButton";
-import { GatedFallback } from "./GatedFallback";
-import { useUserTier, hasTierAccess } from "@/lib/hooks/use-user-tier";
 import type { COURSE_WITH_MODULES_QUERYResult } from "@/sanity.types";
 import { Skeleton } from "../ui/skeleton";
+import { CourseCompleteButton } from "./CourseCompleteButton";
+import { CourseHero } from "./CourseHero";
+import { GatedFallback } from "./GatedFallback";
+import { ModuleAccordion } from "./ModuleAccordion";
 
 interface CourseContentProps {
   course: NonNullable<COURSE_WITH_MODULES_QUERYResult>;
   userId: string | null;
+  isEnrolled: boolean;
 }
 
-export function CourseContent({ course, userId }: CourseContentProps) {
+export function CourseContent({
+  course,
+  userId,
+  isEnrolled,
+}: CourseContentProps) {
   const { isLoaded: isAuthLoaded } = useAuth();
-  const userTier = useUserTier();
-
-  // Check if user has access to this course
-  const hasAccess = hasTierAccess(userTier, course.tier);
 
   // Calculate completion stats from actual lesson data
   let totalLessons = 0;
@@ -54,13 +54,13 @@ export function CourseContent({ course, userId }: CourseContentProps) {
         lessonCount={course.lessonCount}
       />
 
-      {hasAccess ? (
+      {isEnrolled ? (
         <div className="space-y-8">
           {/* Course completion progress */}
           {userId && (
             <CourseCompleteButton
               courseId={course._id}
-              courseSlug={course.slug!.current!}
+              courseSlug={course.slug?.current || ""}
               isCompleted={isCourseCompleted}
               completedLessons={completedLessons}
               totalLessons={totalLessons}
@@ -70,7 +70,11 @@ export function CourseContent({ course, userId }: CourseContentProps) {
           <ModuleAccordion modules={course.modules ?? null} userId={userId} />
         </div>
       ) : (
-        <GatedFallback requiredTier={course.tier} />
+        <GatedFallback
+          courseId={course._id}
+          courseTitle={course.title || "Course"}
+          requiredTier={course.tier}
+        />
       )}
     </>
   );

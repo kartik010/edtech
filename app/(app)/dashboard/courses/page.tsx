@@ -1,10 +1,13 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import { BookOpen } from "lucide-react";
-import { Header } from "@/components/Header";
+import { redirect } from "next/navigation";
 import { CourseCard } from "@/components/courses";
+import { Header } from "@/components/Header";
 import { sanityFetch } from "@/sanity/lib/live";
-import { DASHBOARD_COURSES_QUERY } from "@/sanity/lib/queries";
+import {
+  DASHBOARD_COURSES_QUERY,
+  USER_ENROLLMENTS_QUERY,
+} from "@/sanity/lib/queries";
 
 export default async function MyCoursesPage() {
   const user = await currentUser();
@@ -13,10 +16,25 @@ export default async function MyCoursesPage() {
     redirect("/");
   }
 
-  const { data: courses } = await sanityFetch({
-    query: DASHBOARD_COURSES_QUERY,
-    params: { userId: user.id },
-  });
+  const [{ data: courses }, { data: enrollments }] = await Promise.all([
+    sanityFetch({
+      query: DASHBOARD_COURSES_QUERY,
+      params: { userId: user.id },
+    }),
+    sanityFetch({
+      query: USER_ENROLLMENTS_QUERY,
+      params: { studentId: user.id },
+    }),
+  ]);
+
+  const now = new Date();
+  const validEnrollments = enrollments.filter(
+    (e: { expiresAt: string | null; course: { _id: string } | null }) =>
+      e.expiresAt && new Date(e.expiresAt) > now,
+  );
+  const enrolledCourseIds = validEnrollments
+    .map((e: { course: { _id: string } | null }) => e.course?._id)
+    .filter(Boolean) as string[];
 
   // Calculate completion for each course and filter to started ones
   type Course = (typeof courses)[number];
@@ -84,7 +102,7 @@ export default async function MyCoursesPage() {
             {startedCourses.map((course) => (
               <CourseCard
                 key={course._id}
-                slug={{ current: course.slug!.current! }}
+                slug={{ current: course.slug?.current ?? "" }}
                 title={course.title}
                 description={course.description}
                 tier={course.tier}
@@ -93,6 +111,8 @@ export default async function MyCoursesPage() {
                 lessonCount={course.totalLessons}
                 completedLessonCount={course.completedLessons}
                 isCompleted={course.completedBy?.includes(user.id) ?? false}
+                isLocked={!enrolledCourseIds.includes(course._id)}
+                isEnrolled={enrolledCourseIds.includes(course._id)}
                 showProgress
               />
             ))}

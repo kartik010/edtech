@@ -40,6 +40,7 @@
     "next": "16.1.6",
     "next-sanity": "^11.6.12",
     "radix-ui": "^1.4.3",
+    "razorpay": "^2.9.6",
     "react": "19.2.3",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",

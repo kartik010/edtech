@@ -1,19 +1,19 @@
 "use client";
 
-import { Suspense } from "react";
-import { useRouter } from "next/navigation";
 import {
-  useApplyDocumentActions,
+  type DocumentHandle,
+  deleteDocument,
+  discardDocument,
   publishDocument,
   unpublishDocument,
-  discardDocument,
-  deleteDocument,
-  type DocumentHandle,
+  useApplyDocumentActions,
   useDocument,
   useQuery,
 } from "@sanity/sdk-react";
+import { Download, RotateCcw, Trash2, Upload } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Upload, Trash2, Download, RotateCcw } from "lucide-react";
 
 /**
  * DocumentActions

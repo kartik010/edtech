@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { CheckCircle2, Circle, Loader2, Trophy } from "lucide-react";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { toggleCourseCompletion } from "@/lib/actions";
 

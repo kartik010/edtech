@@ -1,36 +1,30 @@
 "use client";
 
-import Link from "next/link";
 import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { GatedFallback } from "@/components/courses/GatedFallback";
-import { useUserTier, hasTierAccess } from "@/lib/hooks/use-user-tier";
-// import { MuxVideoPlayer } from "./MuxVideoPlayer";
-import { LessonContent } from "./LessonContent";
-import { LessonCompleteButton } from "./LessonCompleteButton";
-import { LessonSidebar } from "./LessonSidebar";
-import { Quiz } from "./Quiz";
+import { Button } from "@/components/ui/button";
 import type { LESSON_BY_ID_QUERYResult } from "@/sanity.types";
+import { LessonCompleteButton } from "./LessonCompleteButton";
+import { LessonContent } from "./LessonContent";
+import { LessonSidebar } from "./LessonSidebar";
 import { MuxVideoPlayer } from "./MuxVideoPlayer";
+import { Quiz } from "./Quiz";
 
 interface LessonPageContentProps {
   lesson: NonNullable<LESSON_BY_ID_QUERYResult>;
   userId: string | null;
+  isEnrolled: boolean;
 }
 
-export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
-  const userTier = useUserTier();
-
-  // Find the first course the user has access to (courses are sorted by tier: free, pro, ultra)
-  // This allows users to access lessons if they have access to ANY course containing the lesson
+export function LessonPageContent({
+  lesson,
+  userId,
+  isEnrolled,
+}: LessonPageContentProps) {
+  // Use the first course for gated fallback UI
   const courses = lesson.courses ?? [];
-  const accessibleCourse = courses.find((course) =>
-    hasTierAccess(userTier, course.tier),
-  );
-  const hasAccess = !!accessibleCourse;
-
-  // Use the accessible course for navigation, or fall back to the first course for gated fallback
-  const activeCourse = accessibleCourse ?? courses[0];
+  const activeCourse = courses[0];
 
   // Check if user has completed this lesson
   const isCompleted = userId
@@ -59,7 +53,7 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
         for (const l of module.lessons) {
           allLessons.push({
             id: l._id,
-            slug: l.slug!.current!,
+            slug: l.slug?.current || "",
             title: l.title ?? "Untitled Lesson",
           });
           if (userId && l.completedBy?.includes(userId)) {
@@ -80,9 +74,9 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       {/* Sidebar */}
-      {activeCourse && hasAccess && (
+      {activeCourse && isEnrolled && (
         <LessonSidebar
-          courseSlug={activeCourse.slug!.current!}
+          courseSlug={activeCourse.slug?.current || ""}
           courseTitle={activeCourse.title}
           modules={activeCourse.modules ?? null}
           currentLessonId={lesson._id}
@@ -92,7 +86,7 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
 
       {/* Main content area */}
       <div className="flex-1 min-w-0">
-        {hasAccess ? (
+        {isEnrolled ? (
           <>
             {/* Video Player */}
             {lesson.video?.asset?.playbackId && (
@@ -117,7 +111,7 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
               {userId && !hasQuiz && (
                 <LessonCompleteButton
                   lessonId={lesson._id}
-                  lessonSlug={lesson.slug!.current!}
+                  lessonSlug={lesson.slug?.current || ""}
                   isCompleted={isCompleted}
                 />
               )}
@@ -138,7 +132,7 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
             {hasQuiz && lesson.quiz && (
               <Quiz
                 lessonId={lesson._id}
-                lessonSlug={lesson.slug!.current!}
+                lessonSlug={lesson.slug?.current || ""}
                 questions={lesson.quiz}
                 bestScore={bestScore}
               />
@@ -175,7 +169,11 @@ export function LessonPageContent({ lesson, userId }: LessonPageContentProps) {
             </div>
           </>
         ) : (
-          <GatedFallback requiredTier={activeCourse?.tier} />
+          <GatedFallback
+            courseId={activeCourse?._id || ""}
+            courseTitle={activeCourse?.title || "Course"}
+            requiredTier={activeCourse?.tier}
+          />
         )}
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 import { use } from "react";
 import { ModuleEditor } from "@/components/admin/editors/ModuleEditor";
-import { projectId, dataset } from "@/sanity/env";
+import { dataset, projectId } from "@/sanity/env";
 
 export default function EditModulePage({
   params,

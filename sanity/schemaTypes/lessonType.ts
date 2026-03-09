@@ -1,4 +1,4 @@
-import { PlayIcon, UserIcon, VideoIcon, HelpCircleIcon } from "@sanity/icons";
+import { HelpCircleIcon, PlayIcon, UserIcon, VideoIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const lessonType = defineType({
