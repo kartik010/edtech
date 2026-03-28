@@ -39,8 +39,8 @@ export function LessonCompleteButton({
       variant={isCompleted ? "ghost" : "default"}
       className={
         isCompleted
-          ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300"
-          : "bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0"
+          ? "border border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-900"
+          : "border-0 bg-[#FF6B2C] text-white hover:bg-[#e85a24]"
       }
     >
       {isPending ? (

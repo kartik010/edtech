@@ -25,8 +25,8 @@ interface ModuleAccordionProps {
 export function ModuleAccordion({ modules, userId }: ModuleAccordionProps) {
   if (!modules || modules.length === 0) {
     return (
-      <div className="text-center py-12 text-zinc-500">
-        <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-50" />
+      <div className="py-12 text-center text-[rgba(26,26,26,0.45)]">
+        <BookOpen className="mx-auto mb-4 h-12 w-12 opacity-50" />
         <p>No modules available yet.</p>
       </div>
     );
@@ -50,7 +50,7 @@ export function ModuleAccordion({ modules, userId }: ModuleAccordionProps) {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold mb-6">Course Content</h2>
+      <h2 className="mb-6 text-2xl font-bold text-[#1A1A1A]">Course content</h2>
 
       <Accordion type="multiple" className="space-y-3">
         {modules.map((module, index) => {
@@ -61,23 +61,23 @@ export function ModuleAccordion({ modules, userId }: ModuleAccordionProps) {
             <AccordionItem
               key={module._id}
               value={module._id}
-              className="border border-zinc-800 rounded-xl overflow-hidden bg-zinc-900/50 data-[state=open]:bg-zinc-900/80"
+              className="overflow-hidden rounded-xl border border-[#e2e8f0] bg-white shadow-sm data-[state=open]:shadow-md"
             >
-              <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-zinc-800/50 transition-colors">
-                <div className="flex items-center gap-4 flex-1">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-violet-500/20 text-violet-400 text-sm font-bold shrink-0">
+              <AccordionTrigger className="px-5 py-4 transition-colors hover:bg-[#F8F9FA] hover:no-underline">
+                <div className="flex flex-1 items-center gap-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FF6B2C]/12 text-sm font-bold text-[#FF6B2C]">
                     {index + 1}
                   </div>
-                  <div className="flex-1 text-left min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs text-zinc-500 uppercase tracking-wider">
+                  <div className="min-w-0 flex-1 text-left">
+                    <div className="mb-1 flex items-center gap-2">
+                      <span className="text-xs tracking-wider text-[rgba(26,26,26,0.45)] uppercase">
                         Module
                       </span>
                     </div>
-                    <h3 className="font-semibold text-white">
+                    <h3 className="font-semibold text-[#1A1A1A]">
                       {module.title ?? "Untitled Module"}
                     </h3>
-                    <p className="text-sm text-zinc-500 mt-1">
+                    <p className="mt-1 text-sm text-[rgba(26,26,26,0.5)]">
                       {total} {total === 1 ? "lesson" : "lessons"}
                       {userId && total > 0 && (
                         <span className="ml-2">
@@ -87,16 +87,15 @@ export function ModuleAccordion({ modules, userId }: ModuleAccordionProps) {
                     </p>
                   </div>
 
-                  {/* Progress bar */}
                   {userId && total > 0 && (
-                    <div className="hidden sm:flex items-center gap-3 shrink-0 w-36">
+                    <div className="hidden w-36 shrink-0 items-center gap-3 sm:flex">
                       <Progress
                         value={(completed / total) * 100}
-                        className="flex-1 h-2 bg-zinc-700 [&>div]:bg-emerald-500"
+                        className="h-2 flex-1 bg-[#e2e8f0] [&>div]:bg-emerald-500"
                       />
                       <div className="w-5">
                         {isModuleComplete && (
-                          <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                          <CheckCircle2 className="h-5 w-5 text-emerald-600" />
                         )}
                       </div>
                     </div>
@@ -104,8 +103,8 @@ export function ModuleAccordion({ modules, userId }: ModuleAccordionProps) {
                 </div>
               </AccordionTrigger>
 
-              <AccordionContent className="px-5 pb-4 pt-2">
-                <div className="ml-4 border-l-2 border-zinc-800 pl-3 space-y-1">
+              <AccordionContent className="px-5 pt-2 pb-4">
+                <div className="ml-4 space-y-1 border-l-2 border-[#e2e8f0] pl-3">
                   {module.lessons?.map((lesson, _lessonIndex) => {
                     const completed = isLessonCompleted(lesson);
                     const hasVideo = !!lesson.video?.asset?.playbackId;
@@ -114,24 +113,26 @@ export function ModuleAccordion({ modules, userId }: ModuleAccordionProps) {
                       <Link
                         key={lesson._id}
                         href={`/lessons/${lesson.slug?.current || ""}`}
-                        className="flex items-center gap-2.5 pl-2 pr-3 py-2 rounded-lg hover:bg-zinc-800/50 transition-colors group"
+                        className="group flex items-center gap-2.5 rounded-lg py-2 pr-3 pl-2 transition-colors hover:bg-[#F8F9FA]"
                       >
                         {completed ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
                         ) : (
-                          <Circle className="w-4 h-4 text-zinc-600 shrink-0" />
+                          <Circle className="h-4 w-4 shrink-0 text-[#cbd5e1]" />
                         )}
 
                         <span
-                          className={`flex-1 text-sm ${
-                            completed ? "text-zinc-400" : "text-zinc-300"
-                          } group-hover:text-white transition-colors`}
+                          className={`flex-1 text-sm transition-colors ${
+                            completed
+                              ? "text-[rgba(26,26,26,0.5)]"
+                              : "text-[#1A1A1A]"
+                          } group-hover:text-[#FF6B2C]`}
                         >
                           {lesson.title ?? "Untitled Lesson"}
                         </span>
 
                         {hasVideo && (
-                          <Play className="w-4 h-4 text-zinc-500 group-hover:text-violet-400 transition-colors" />
+                          <Play className="h-4 w-4 text-[rgba(26,26,26,0.35)] transition-colors group-hover:text-[#FF6B2C]" />
                         )}
                       </Link>
                     );

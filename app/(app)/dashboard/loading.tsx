@@ -2,16 +2,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 function Loading() {
   return (
-    <div className="min-h-screen bg-[#09090b] text-white overflow-hidden">
-      {/* Animated gradient mesh background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-violet-600/15 rounded-full blur-[120px] animate-pulse" />
+    <div className="min-h-screen overflow-hidden bg-[#FAFAFA] text-[#1A1A1A]">
+      <div className="pointer-events-none fixed inset-0">
+        <div className="absolute top-[-20%] left-[-10%] h-[600px] w-[600px] animate-pulse rounded-full bg-[#FF6B2C]/12 blur-[120px]" />
         <div
-          className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-fuchsia-600/10 rounded-full blur-[100px] animate-pulse"
+          className="absolute right-[-10%] bottom-[-10%] h-[500px] w-[500px] animate-pulse rounded-full bg-[#FFC107]/10 blur-[100px]"
           style={{ animationDelay: "1s" }}
         />
         <div
-          className="absolute top-[40%] right-[20%] w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px] animate-pulse"
+          className="absolute top-[40%] right-[20%] h-[400px] w-[400px] animate-pulse rounded-full bg-[#FF6B2C]/8 blur-[80px]"
           style={{ animationDelay: "2s" }}
         />
       </div>
@@ -27,18 +26,18 @@ function Loading() {
       {/* Header Skeleton */}
       <nav className="relative z-10 flex items-center justify-between px-6 lg:px-12 py-5 max-w-7xl mx-auto">
         <div className="flex items-center gap-3">
-          <Skeleton className="w-10 h-10 rounded-xl bg-zinc-800" />
+          <Skeleton className="w-10 h-10 rounded-xl bg-[#e2e8f0]" />
           <div className="flex flex-col gap-1">
-            <Skeleton className="w-16 h-4 bg-zinc-800" />
-            <Skeleton className="w-12 h-2 bg-zinc-800" />
+            <Skeleton className="w-16 h-4 bg-[#e2e8f0]" />
+            <Skeleton className="w-12 h-2 bg-[#e2e8f0]" />
           </div>
         </div>
         <div className="hidden md:flex items-center gap-2">
-          <Skeleton className="w-28 h-9 rounded-lg bg-zinc-800" />
-          <Skeleton className="w-28 h-9 rounded-lg bg-zinc-800" />
-          <Skeleton className="w-24 h-9 rounded-lg bg-zinc-800" />
+          <Skeleton className="w-28 h-9 rounded-lg bg-[#e2e8f0]" />
+          <Skeleton className="w-28 h-9 rounded-lg bg-[#e2e8f0]" />
+          <Skeleton className="w-24 h-9 rounded-lg bg-[#e2e8f0]" />
         </div>
-        <Skeleton className="w-9 h-9 rounded-full bg-zinc-800" />
+        <Skeleton className="w-9 h-9 rounded-full bg-[#e2e8f0]" />
       </nav>
 
       {/* Main Content Skeleton */}
@@ -46,10 +45,10 @@ function Loading() {
         {/* Welcome Header Skeleton */}
         <div className="mb-12">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-            <Skeleton className="h-12 w-80 bg-zinc-800 rounded-lg" />
-            <Skeleton className="h-10 w-36 rounded-full bg-zinc-800" />
+            <Skeleton className="h-12 w-80 bg-[#e2e8f0] rounded-lg" />
+            <Skeleton className="h-10 w-36 rounded-full bg-[#e2e8f0]" />
           </div>
-          <Skeleton className="h-6 w-96 bg-zinc-800 rounded" />
+          <Skeleton className="h-6 w-96 bg-[#e2e8f0] rounded" />
         </div>
 
         {/* Quick Stats Skeleton */}
@@ -57,13 +56,13 @@ function Loading() {
           {["stat-1", "stat-2", "stat-3"].map((id) => (
             <div
               key={id}
-              className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800"
+              className="p-6 rounded-xl border border-[#e2e8f0] bg-white shadow-sm"
             >
               <div className="flex items-center gap-3">
-                <Skeleton className="w-10 h-10 rounded-lg bg-zinc-800" />
+                <Skeleton className="w-10 h-10 rounded-lg bg-[#e2e8f0]" />
                 <div className="space-y-2">
-                  <Skeleton className="h-7 w-12 bg-zinc-800 rounded" />
-                  <Skeleton className="h-4 w-24 bg-zinc-800 rounded" />
+                  <Skeleton className="h-7 w-12 bg-[#e2e8f0] rounded" />
+                  <Skeleton className="h-4 w-24 bg-[#e2e8f0] rounded" />
                 </div>
               </div>
             </div>
@@ -71,12 +70,12 @@ function Loading() {
         </div>
 
         {/* Course List Header Skeleton */}
-        <Skeleton className="h-8 w-32 bg-zinc-800 rounded mb-6" />
+        <Skeleton className="h-8 w-32 bg-[#e2e8f0] rounded mb-6" />
 
         {/* Filter Tabs Skeleton */}
         <div className="flex gap-2 mb-6">
           {["tab-1", "tab-2", "tab-3", "tab-4"].map((id) => (
-            <Skeleton key={id} className="h-9 w-20 rounded-lg bg-zinc-800" />
+            <Skeleton key={id} className="h-9 w-20 rounded-lg bg-[#e2e8f0]" />
           ))}
         </div>
 
@@ -92,19 +91,19 @@ function Loading() {
           ].map((id) => (
             <div
               key={id}
-              className="rounded-2xl bg-zinc-900/50 border border-zinc-800 overflow-hidden"
+              className="rounded-2xl border border-[#e2e8f0] bg-white shadow-sm overflow-hidden"
             >
-              <Skeleton className="w-full aspect-video bg-zinc-800" />
+              <Skeleton className="w-full aspect-video bg-[#e2e8f0]" />
               <div className="p-5 space-y-3">
                 <div className="flex items-center gap-2">
-                  <Skeleton className="h-5 w-16 rounded-full bg-zinc-800" />
+                  <Skeleton className="h-5 w-16 rounded-full bg-[#e2e8f0]" />
                 </div>
-                <Skeleton className="h-6 w-3/4 bg-zinc-800 rounded" />
-                <Skeleton className="h-4 w-full bg-zinc-800 rounded" />
-                <Skeleton className="h-4 w-2/3 bg-zinc-800 rounded" />
+                <Skeleton className="h-6 w-3/4 bg-[#e2e8f0] rounded" />
+                <Skeleton className="h-4 w-full bg-[#e2e8f0] rounded" />
+                <Skeleton className="h-4 w-2/3 bg-[#e2e8f0] rounded" />
                 <div className="flex items-center gap-4 pt-2">
-                  <Skeleton className="h-4 w-20 bg-zinc-800 rounded" />
-                  <Skeleton className="h-4 w-20 bg-zinc-800 rounded" />
+                  <Skeleton className="h-4 w-20 bg-[#e2e8f0] rounded" />
+                  <Skeleton className="h-4 w-20 bg-[#e2e8f0] rounded" />
                 </div>
               </div>
             </div>

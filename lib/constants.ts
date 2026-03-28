@@ -10,16 +10,16 @@ type TierColor = "emerald" | "violet" | "cyan";
 
 const TIER_COLOR_MAP: Record<TierColor, { border: string; text: string }> = {
   emerald: {
-    border: "border-emerald-500/20",
-    text: "text-emerald-400",
+    border: "border-[#FF6B2C]/30",
+    text: "text-[#FF6B2C]",
   },
   violet: {
-    border: "border-violet-500/30",
-    text: "text-violet-400",
+    border: "border-[#FFC107]/40",
+    text: "text-[#d97706]",
   },
   cyan: {
-    border: "border-cyan-500/20",
-    text: "text-cyan-400",
+    border: "border-[#1A1A1A]/25",
+    text: "text-[#1A1A1A]",
   },
 };
 
@@ -38,22 +38,22 @@ export const TIER_STYLES: Record<
   }
 > = {
   free: {
-    gradient: "from-emerald-500 to-teal-600",
-    border: "border-emerald-500/30",
-    text: "text-emerald-400",
-    badge: "bg-emerald-500/90 text-white",
+    gradient: "from-[#FF6B2C] to-[#f59e0b]",
+    border: "border-[#FF6B2C]/30",
+    text: "text-[#FF6B2C]",
+    badge: "bg-[#FF6B2C] text-white",
   },
   pro: {
-    gradient: "from-violet-500 to-fuchsia-600",
-    border: "border-violet-500/30",
-    text: "text-violet-400",
-    badge: "bg-violet-500/90 text-white",
+    gradient: "from-[#FFC107] to-[#FF6B2C]",
+    border: "border-[#FFC107]/40",
+    text: "text-[#d97706]",
+    badge: "bg-[#FFC107] text-[#1A1A1A]",
   },
   ultra: {
-    gradient: "from-cyan-400 to-blue-600",
-    border: "border-cyan-500/30",
-    text: "text-cyan-400",
-    badge: "bg-cyan-500/90 text-white",
+    gradient: "from-[#1A1A1A] to-[#3f3f46]",
+    border: "border-[#1A1A1A]/30",
+    text: "text-[#1A1A1A]",
+    badge: "bg-[#1A1A1A] text-white",
   },
 };
 

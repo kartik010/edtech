@@ -48,120 +48,134 @@ export default function SponsorPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#09090b] text-white overflow-hidden">
-            {/* Background */}
-            <div className="fixed inset-0 pointer-events-none">
-                <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-fuchsia-600/15 rounded-full blur-[120px] animate-pulse" />
-                <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-violet-600/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="min-h-screen overflow-hidden bg-white text-[#1A1A1A]">
+            <div className="pointer-events-none fixed inset-0">
+                <div className="absolute top-[-15%] left-[-10%] h-[400px] w-[400px] rounded-full bg-[#FF6B2C]/10 blur-[100px]" />
+                <div className="absolute bottom-[-10%] right-[-10%] h-[360px] w-[360px] rounded-full bg-[#FFC107]/20 blur-[90px]" />
             </div>
 
             <Header />
 
-            <main className="relative z-10 px-6 lg:px-12 py-16 max-w-2xl mx-auto">
-                {/* Header */}
-                <div className="text-center mb-12">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-fuchsia-500/10 border border-fuchsia-500/20 mb-6">
-                        <Heart className="w-4 h-4 text-fuchsia-400" />
-                        <span className="text-sm text-fuchsia-300">Sponsor Program</span>
-                    </div>
-                    <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">
-                        Apply for a{" "}
-                        <span className="bg-gradient-to-r from-fuchsia-400 to-violet-400 bg-clip-text text-transparent">
-                            Sponsorship
+            <main className="relative z-10 mx-auto max-w-2xl px-6 pt-28 pb-16 lg:px-12">
+                <div className="mb-12 text-center">
+                    <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#FF6B2C]/20 bg-[#FF6B2C]/5 px-4 py-2">
+                        <Heart className="h-4 w-4 text-[#FF6B2C]" />
+                        <span className="text-sm font-semibold tracking-wide text-[#FF6B2C] uppercase">
+                            Get sponsored
                         </span>
+                    </div>
+                    <h1 className="mb-4 text-4xl font-black tracking-tight md:text-5xl font-['Outfit',sans-serif]">
+                        Apply for a{" "}
+                        <span className="text-[#FF6B2C]">sponsorship</span>
                     </h1>
-                    <p className="text-zinc-400 text-lg max-w-xl mx-auto">
-                        Can&apos;t afford the course right now? Tell us your story. We select students from passionate backgrounds and sponsor their access.
+                    <p className="mx-auto max-w-xl text-lg text-[rgba(26,26,26,0.6)]">
+                        Can&apos;t afford a course right now? Tell us your story. Selected
+                        students are published as{" "}
+                        <span className="font-semibold text-[#1A1A1A]">
+                            student stories
+                        </span>{" "}
+                        with video.
                     </p>
                 </div>
 
                 {submitted ? (
-                    /* Success State */
-                    <div className="text-center py-16 px-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
-                        <CheckCircle2 className="w-16 h-16 text-emerald-400 mx-auto mb-4" />
-                        <h2 className="text-2xl font-bold mb-2">Application Submitted!</h2>
-                        <p className="text-zinc-400">
-                            We received your application. Our team will review it and reach out to you via email within a few business days.
+                    <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-8 py-16 text-center">
+                        <CheckCircle2 className="mx-auto mb-4 h-16 w-16 text-emerald-600" />
+                        <h2 className="mb-2 text-2xl font-bold">Application submitted</h2>
+                        <p className="text-[rgba(26,26,26,0.65)]">
+                            We received your application. Our team will review it and
+                            reach out by email within a few business days.
                         </p>
                     </div>
                 ) : !isLoaded ? (
                     <div className="flex items-center justify-center py-16">
-                        <Loader2 className="w-8 h-8 animate-spin text-zinc-500" />
+                        <Loader2 className="h-8 w-8 animate-spin text-[#FF6B2C]" />
                     </div>
                 ) : !user ? (
-                    /* Not logged in */
-                    <div className="text-center py-16 px-8 rounded-2xl bg-zinc-900/50 border border-zinc-800">
-                        <Heart className="w-12 h-12 text-fuchsia-400 mx-auto mb-4" />
-                        <h2 className="text-xl font-bold mb-4">Sign in to apply</h2>
-                        <p className="text-zinc-400 mb-6">You need an account to submit a sponsorship application.</p>
+                    <div className="rounded-2xl border border-[#e2e8f0] bg-[#F8F9FA] px-8 py-16 text-center">
+                        <Heart className="mx-auto mb-4 h-12 w-12 text-[#FF6B2C]" />
+                        <h2 className="mb-4 text-xl font-bold">Sign in to apply</h2>
+                        <p className="mb-6 text-[rgba(26,26,26,0.6)]">
+                            You need an account to submit a sponsorship application.
+                        </p>
                         <SignInButton mode="modal">
-                            <Button className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0">
-                                Sign in to Continue
+                            <Button className="border-0 bg-[#1A1A1A] text-white hover:bg-[#2a2a2a]">
+                                Sign in to continue
                             </Button>
                         </SignInButton>
                     </div>
                 ) : (
                     /* Application Form */
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
-                                <label className="block text-sm font-medium text-zinc-300 mb-2">Full Name *</label>
+                                <label className="mb-2 block text-sm font-medium text-[#1A1A1A]">
+                                    Full name *
+                                </label>
                                 <input
                                     type="text"
                                     required
                                     value={form.studentName}
                                     onChange={(e) => setForm((f) => ({ ...f, studentName: e.target.value }))}
-                                    className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors"
+                                    className="w-full rounded-xl border border-[#e2e8f0] bg-white px-4 py-3 text-[#1A1A1A] transition-colors placeholder:text-[rgba(26,26,26,0.4)] focus:border-[#FF6B2C] focus:outline-none"
                                     placeholder="Your full name"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-zinc-300 mb-2">Email *</label>
+                                <label className="mb-2 block text-sm font-medium text-[#1A1A1A]">
+                                    Email *
+                                </label>
                                 <input
                                     type="email"
                                     required
                                     value={form.email}
                                     onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-                                    className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors"
+                                    className="w-full rounded-xl border border-[#e2e8f0] bg-white px-4 py-3 text-[#1A1A1A] transition-colors placeholder:text-[rgba(26,26,26,0.4)] focus:border-[#FF6B2C] focus:outline-none"
                                     placeholder="your@email.com"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2">Course You&apos;re Applying For</label>
+                            <label className="mb-2 block text-sm font-medium text-[#1A1A1A]">
+                                Course you&apos;re applying for
+                            </label>
                             <input
                                 type="text"
                                 value={form.courseTitle}
                                 onChange={(e) => setForm((f) => ({ ...f, courseTitle: e.target.value }))}
-                                className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors"
-                                placeholder="e.g. React Masterclass"
+                                className="w-full rounded-xl border border-[#e2e8f0] bg-white px-4 py-3 text-[#1A1A1A] transition-colors placeholder:text-[rgba(26,26,26,0.4)] focus:border-[#FF6B2C] focus:outline-none"
+                                placeholder="Course name"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2">
-                                Video Link *
+                            <label className="mb-2 block text-sm font-medium text-[#1A1A1A]">
+                                Video link *
                             </label>
-                            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 focus-within:border-violet-500 transition-colors">
-                                <Video className="w-5 h-5 text-zinc-500 shrink-0" />
+                            <div className="flex items-center gap-3 rounded-xl border border-[#e2e8f0] bg-white px-4 py-3 transition-colors focus-within:border-[#FF6B2C]">
+                                <Video className="h-5 w-5 shrink-0 text-[rgba(26,26,26,0.45)]" />
                                 <input
                                     type="url"
                                     required
                                     value={form.videoUrl}
                                     onChange={(e) => setForm((f) => ({ ...f, videoUrl: e.target.value }))}
-                                    className="flex-1 bg-transparent text-white placeholder:text-zinc-600 focus:outline-none"
-                                    placeholder="https://youtube.com/... or Google Drive link"
+                                    className="flex-1 bg-transparent text-[#1A1A1A] placeholder:text-[rgba(26,26,26,0.4)] focus:outline-none"
+                                    placeholder="YouTube, Loom, Google Drive…"
                                 />
                             </div>
-                            <p className="text-xs text-zinc-500 mt-2">
-                                Record a short 1–3 minute video (YouTube, Google Drive, Loom etc.) telling us your story — who you are, why you want this course, and how it will help you.
+                            <p className="mt-2 text-xs text-[rgba(26,26,26,0.5)]">
+                                1–3 min: who you are, why this course, and how it will help you.
+                                If you are selected, we can feature a Mux upload from Sanity on the site.
                             </p>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2">
-                                Personal Statement * <span className="text-zinc-500">(50–1000 characters)</span>
+                            <label className="mb-2 block text-sm font-medium text-[#1A1A1A]">
+                                Personal statement *{" "}
+                                <span className="font-normal text-[rgba(26,26,26,0.45)]">
+                                    (50–1000 characters)
+                                </span>
                             </label>
                             <textarea
                                 required
@@ -170,14 +184,16 @@ export default function SponsorPage() {
                                 rows={6}
                                 value={form.message}
                                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-                                className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500 transition-colors resize-none"
-                                placeholder="Tell us your story — your background, goals, and why you need this sponsorship..."
+                                className="w-full resize-none rounded-xl border border-[#e2e8f0] bg-white px-4 py-3 text-[#1A1A1A] transition-colors placeholder:text-[rgba(26,26,26,0.4)] focus:border-[#FF6B2C] focus:outline-none"
+                                placeholder="Your background, goals, and why you need this sponsorship…"
                             />
-                            <p className="text-xs text-zinc-500 mt-1 text-right">{form.message.length}/1000</p>
+                            <p className="mt-1 text-right text-xs text-[rgba(26,26,26,0.45)]">
+                                {form.message.length}/1000
+                            </p>
                         </div>
 
                         {error && (
-                            <p className="text-red-400 text-sm text-center bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+                            <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700">
                                 {error}
                             </p>
                         )}
@@ -186,7 +202,7 @@ export default function SponsorPage() {
                             type="submit"
                             size="lg"
                             disabled={submitting}
-                            className="w-full bg-gradient-to-r from-fuchsia-600 to-violet-600 hover:from-fuchsia-500 hover:to-violet-500 text-white border-0 shadow-xl shadow-fuchsia-600/30 h-13"
+                            className="h-13 w-full border-0 bg-[#FF6B2C] text-white shadow-lg shadow-[#FF6B2C]/25 hover:bg-[#e85f24]"
                         >
                             {submitting ? (
                                 <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Submitting...</>

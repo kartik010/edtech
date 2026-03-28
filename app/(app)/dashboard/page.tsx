@@ -87,63 +87,40 @@ export default async function DashboardPage() {
     totalQuizzesTaken > 0 ? Math.round(totalQuizScore / totalQuizzesTaken) : 0;
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-white overflow-hidden">
-      {/* Animated gradient mesh background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-violet-600/15 rounded-full blur-[120px] animate-pulse" />
-        <div
-          className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-fuchsia-600/10 rounded-full blur-[100px] animate-pulse"
-          style={{ animationDelay: "1s" }}
-        />
-        <div
-          className="absolute top-[40%] right-[20%] w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[80px] animate-pulse"
-          style={{ animationDelay: "2s" }}
-        />
+    <div className="min-h-screen overflow-x-hidden bg-[#FAFAFA] text-[#1A1A1A]">
+      <div className="pointer-events-none fixed inset-0">
+        <div className="absolute top-[-15%] right-[-8%] h-[380px] w-[380px] rounded-full bg-[#FFC107]/15 blur-[100px]" />
+        <div className="absolute bottom-[-10%] left-[-8%] h-[360px] w-[360px] rounded-full bg-[#FF6B2C]/10 blur-[90px]" />
       </div>
 
-      {/* Noise texture overlay */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-[0.015]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* Navigation */}
       <Header />
 
-      {/* Main Content */}
-      <main className="relative z-10 px-6 lg:px-12 py-12 max-w-7xl mx-auto">
-        {/* Welcome Header */}
+      <main className="relative z-10 mx-auto max-w-7xl px-6 pt-28 pb-12 lg:px-12">
         <div className="mb-12">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-            <h1 className="text-4xl md:text-5xl font-black tracking-tight">
+          <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="text-4xl font-black tracking-tight md:text-5xl">
               Welcome back,{" "}
-              <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
-                {firstName}
-              </span>
+              <span className="text-[#FF6B2C]">{firstName}</span>
             </h1>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 shrink-0">
-              <Sparkles className="w-4 h-4 text-violet-400" />
-              <span className="text-sm text-violet-300">
-                {enrolledCourseIds.length} Active Courses
+            <div className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#FF6B2C]/20 bg-[#FF6B2C]/5 px-4 py-2">
+              <Sparkles className="h-4 w-4 text-[#FF6B2C]" />
+              <span className="text-sm font-semibold text-[#FF6B2C]">
+                {enrolledCourseIds.length} active courses
               </span>
             </div>
           </div>
-          <p className="text-lg text-zinc-400 max-w-2xl">
+          <p className="max-w-2xl text-lg text-[rgba(26,26,26,0.6)]">
             Pick up where you left off or discover something new. Your learning
             journey continues here.
           </p>
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
-          {/* Completion Rate */}
-          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 lg:col-span-1">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+        <div className="mb-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
+          <div className="rounded-xl border border-[#e2e8f0] bg-white p-6 shadow-sm lg:col-span-1">
+            <div className="mb-2 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FF6B2C]/10">
                 <svg
-                  className="w-5 h-5 text-blue-400"
+                  className="h-5 w-5 text-[#FF6B2C]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -159,17 +136,18 @@ export default async function DashboardPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">{overallCompletionRate}%</p>
-                <p className="text-sm text-zinc-500">Completion Rate</p>
+                <p className="text-sm text-[rgba(26,26,26,0.45)]">
+                  Completion rate
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Assessment Score */}
-          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 lg:col-span-1">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center">
+          <div className="rounded-xl border border-[#e2e8f0] bg-white p-6 shadow-sm lg:col-span-1">
+            <div className="mb-2 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FFC107]/20">
                 <svg
-                  className="w-5 h-5 text-orange-400"
+                  className="h-5 w-5 text-[#d97706]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -185,39 +163,42 @@ export default async function DashboardPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">{averageAssessmentScore}%</p>
-                <p className="text-sm text-zinc-500">Avg. Score</p>
+                <p className="text-sm text-[rgba(26,26,26,0.45)]">Avg. score</p>
               </div>
             </div>
           </div>
 
-          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 lg:col-span-1">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
-                <BookOpen className="w-5 h-5 text-violet-400" />
+          <div className="rounded-xl border border-[#e2e8f0] bg-white p-6 shadow-sm lg:col-span-1">
+            <div className="mb-2 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#FF6B2C]/10">
+                <BookOpen className="h-5 w-5 text-[#FF6B2C]" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{courses.length}</p>
-                <p className="text-sm text-zinc-500">Available Courses</p>
+                <p className="text-sm text-[rgba(26,26,26,0.45)]">
+                  Available courses
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="p-6 rounded-xl bg-zinc-900/50 border border-zinc-800 lg:col-span-1">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-emerald-400" />
+          <div className="rounded-xl border border-[#e2e8f0] bg-white p-6 shadow-sm lg:col-span-1">
+            <div className="mb-2 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/15">
+                <Sparkles className="h-5 w-5 text-emerald-600" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{enrolledCourseIds.length}</p>
-                <p className="text-sm text-zinc-500">Purchased Courses</p>
+                <p className="text-sm text-[rgba(26,26,26,0.45)]">
+                  Purchased courses
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Course List */}
         <div>
-          <h2 className="text-2xl font-bold mb-6">All Courses</h2>
+          <h2 className="mb-6 text-2xl font-bold">All courses</h2>
           <CourseList
             courses={courses}
             enrolledCourseIds={enrolledCourseIds}

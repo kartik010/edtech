@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { TIER_STYLES } from "@/lib/constants";
 import type { COURSE_WITH_MODULES_QUERYResult } from "@/sanity.types";
 
-// Infer props from Sanity query result
 type Course = NonNullable<COURSE_WITH_MODULES_QUERYResult>;
 
 type CourseHeroProps = Pick<
@@ -33,19 +32,17 @@ export function CourseHero({
 
   return (
     <div className="mb-12">
-      {/* Back link */}
       <Link
         href="/dashboard"
-        className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors mb-8"
+        className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-[rgba(26,26,26,0.55)] transition-colors hover:text-[#FF6B2C]"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="h-4 w-4" />
         Back to dashboard
       </Link>
 
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Thumbnail */}
+      <div className="flex flex-col gap-8 lg:flex-row">
         <div
-          className={`relative w-full lg:w-80 h-48 lg:h-52 rounded-2xl bg-gradient-to-br ${styles.gradient} flex items-center justify-center overflow-hidden shrink-0`}
+          className={`relative flex h-48 w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br lg:h-52 lg:w-80 ${styles.gradient}`}
         >
           {thumbnail?.asset?.url ? (
             <Image
@@ -60,37 +57,36 @@ export function CourseHero({
           <div className="absolute inset-0 bg-black/10" />
         </div>
 
-        {/* Course Info */}
         <div className="flex-1">
-          <div className="flex flex-wrap items-center gap-3 mb-4">
+          <div className="mb-4 flex flex-wrap items-center gap-3">
             {category?.title && (
               <Badge
                 variant="outline"
-                className="border-zinc-700 text-zinc-400"
+                className="border-[#e2e8f0] text-[rgba(26,26,26,0.65)]"
               >
-                <Tag className="w-3 h-3 mr-1" />
+                <Tag className="mr-1 h-3 w-3" />
                 {category.title}
               </Badge>
             )}
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight mb-4 text-white">
+          <h1 className="mb-4 text-3xl font-black tracking-tight text-[#1A1A1A] md:text-4xl">
             {title ?? "Untitled Course"}
           </h1>
 
           {description && (
-            <p className="text-lg text-zinc-400 mb-6 leading-relaxed max-w-2xl">
+            <p className="mb-6 max-w-2xl text-lg leading-relaxed text-[rgba(26,26,26,0.62)]">
               {description}
             </p>
           )}
 
-          <div className="flex items-center gap-6 text-sm text-zinc-500">
+          <div className="flex items-center gap-6 text-sm text-[rgba(26,26,26,0.5)]">
             <span className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4" />
+              <BookOpen className="h-4 w-4" />
               {moduleCount ?? 0} modules
             </span>
             <span className="flex items-center gap-2">
-              <Play className="w-4 h-4" />
+              <Play className="h-4 w-4" />
               {lessonCount ?? 0} lessons
             </span>
           </div>

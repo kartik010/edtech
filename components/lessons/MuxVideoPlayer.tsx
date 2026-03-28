@@ -9,6 +9,8 @@ interface MuxVideoPlayerProps {
   playbackId: string | null | undefined;
   title?: string;
   className?: string;
+  /** Mux player accent (hex), e.g. brand orange on marketing pages */
+  accentColor?: string;
 }
 
 interface MuxTokens {
@@ -21,6 +23,7 @@ export function MuxVideoPlayer({
   playbackId,
   title,
   className,
+  accentColor = "#8b5cf6",
 }: MuxVideoPlayerProps) {
   const [tokens, setTokens] = useState<MuxTokens | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -92,7 +95,7 @@ export function MuxVideoPlayer({
         streamType="on-demand"
         autoPlay={false}
         className="w-full aspect-video rounded-xl overflow-hidden"
-        accentColor="#8b5cf6"
+        accentColor={accentColor}
         onError={() => {
           // Error handling - player will show its own error UI
         }}

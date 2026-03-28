@@ -40,21 +40,19 @@ function AdminHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[#e2e8f0] bg-white/90 backdrop-blur-xl">
       <div className="flex h-14 items-center px-4 lg:px-6">
-        {/* Logo */}
         <Link
           href="/admin"
           className="flex items-center gap-2.5 font-semibold lg:mr-8"
         >
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-600 shadow-lg shadow-violet-500/20">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#FF6B2C] shadow-md shadow-[#FF6B2C]/20">
             <Code2 className="h-4 w-4 text-white" />
           </div>
-          <span className="text-lg text-white hidden sm:inline">Admin</span>
+          <span className="hidden text-lg text-[#1A1A1A] sm:inline">Admin</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden items-center gap-1 lg:flex">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href, item.exact);
@@ -63,10 +61,10 @@ function AdminHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                  "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   active
-                    ? "bg-violet-500/20 text-violet-300"
-                    : "text-zinc-400 hover:text-white hover:bg-zinc-800/50",
+                    ? "bg-[rgba(255,107,44,0.12)] text-[#c44a1a]"
+                    : "text-[rgba(26,26,26,0.55)] hover:bg-[#F8F9FA] hover:text-[#1A1A1A]",
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -76,27 +74,24 @@ function AdminHeader() {
           })}
         </nav>
 
-        {/* Spacer */}
         <div className="flex-1" />
 
-        {/* Desktop Actions */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden items-center gap-4 lg:flex">
           <Link
             href="/studio"
-            className="text-sm text-zinc-400 hover:text-white transition-colors"
+            className="text-sm text-[rgba(26,26,26,0.55)] transition-colors hover:text-[#FF6B2C]"
           >
             Open Studio
           </Link>
           <AdminLogOutButton />
         </div>
 
-        {/* Mobile Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="lg:hidden">
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9 text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+              className="h-9 w-9 text-[rgba(26,26,26,0.55)] hover:bg-[#F8F9FA] hover:text-[#1A1A1A]"
             >
               <Menu className="h-5 w-5" />
               <span className="sr-only">Open menu</span>
@@ -104,7 +99,7 @@ function AdminHeader() {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="w-56 bg-zinc-900 border-zinc-800"
+            className="w-56 border-[#e2e8f0] bg-white"
           >
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
@@ -114,10 +109,10 @@ function AdminHeader() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-2 cursor-pointer",
+                      "flex cursor-pointer items-center gap-2",
                       active
-                        ? "text-violet-300 bg-violet-500/10"
-                        : "text-zinc-300",
+                        ? "bg-[rgba(255,107,44,0.1)] text-[#c44a1a]"
+                        : "text-[#1A1A1A]",
                     )}
                   >
                     <Icon className="h-4 w-4" />
@@ -126,17 +121,17 @@ function AdminHeader() {
                 </DropdownMenuItem>
               );
             })}
-            <DropdownMenuSeparator className="bg-zinc-800" />
+            <DropdownMenuSeparator className="bg-[#e2e8f0]" />
             <DropdownMenuItem asChild>
               <Link
                 href="/studio"
-                className="flex items-center gap-2 cursor-pointer text-zinc-300"
+                className="flex cursor-pointer items-center gap-2 text-[#1A1A1A]"
               >
                 <ExternalLink className="h-4 w-4" />
                 Open Studio
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-zinc-800" />
+            <DropdownMenuSeparator className="bg-[#e2e8f0]" />
             <div className="p-2">
               <AdminLogOutButton />
             </div>

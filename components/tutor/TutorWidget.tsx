@@ -1,141 +1,126 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
+import Link from "next/link";
 import { MessageCircle, PanelRightClose, Sparkles } from "lucide-react";
 import { TutorChat } from "./TutorChat";
 import { TutorProvider, useTutor } from "./TutorContext";
 
-function TutorPanel() {
+function TutorUpsell() {
+  return (
+    <div className="flex h-full flex-col items-center justify-center gap-6 p-8 text-center">
+      <div className="rounded-2xl border border-[#FF6B2C]/25 bg-[#FF6B2C]/5 px-6 py-8">
+        <Sparkles className="mx-auto mb-4 h-10 w-10 text-[#FF6B2C]" />
+        <h3 className="mb-2 text-lg font-semibold text-[#1A1A1A]">
+          AI assistant is an Ultra feature
+        </h3>
+        <p className="mb-6 text-sm text-[rgba(26,26,26,0.65)]">
+          Upgrade to Ultra to chat with the learning assistant and get
+          personalized course guidance.
+        </p>
+        <Link
+          href="/pricing"
+          className="inline-flex rounded-full bg-[#FF6B2C] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-[#FF6B2C]/25 transition-opacity hover:opacity-90"
+        >
+          View Ultra pricing
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function TutorPanel({ isUltra }: { isUltra: boolean }) {
   const { isOpen, closeChat, toggleChat } = useTutor();
 
   return (
     <>
-      {/* Backdrop */}
       <button
         type="button"
         aria-label="Close chat"
         className={`
-          fixed inset-0 z-40 bg-black/40 backdrop-blur-sm
-          transition-opacity duration-300 cursor-default
-          ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
+          fixed inset-0 z-[100] cursor-default bg-black/40 backdrop-blur-sm
+          transition-opacity duration-300
+          ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"}
         `}
         onClick={closeChat}
       />
 
-      {/* Slide-out Panel */}
       <div
         className={`
-          fixed top-0 right-0 z-50
-          h-full w-full sm:w-[640px] lg:w-[720px]
-          transform transition-transform duration-300 ease-out
+          fixed top-0 right-0 z-[110] h-full w-full
+          transform transition-transform duration-300 ease-out sm:w-[640px] lg:w-[720px]
           ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        <div
-          className="
-            h-full w-full
-            bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950
-            border-l border-cyan-500/20
-            shadow-2xl shadow-black/50
-            flex flex-col
-          "
-        >
-          {/* Header */}
-          <div
-            className="
-              flex items-center justify-between
-              px-6 py-5
-              bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-cyan-500/10
-              border-b border-cyan-500/20
-            "
-          >
+        <div className="flex h-full w-full flex-col border-l border-[#FF6B2C]/20 bg-gradient-to-b from-[#1a1a1a] via-[#1f1f1f] to-[#141414] shadow-2xl shadow-black/40">
+          <div className="flex items-center justify-between border-b border-[#FF6B2C]/20 bg-gradient-to-r from-[#FF6B2C]/10 via-[#FFC107]/10 to-[#FF6B2C]/10 px-6 py-5">
             <div className="flex items-center gap-4">
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
-                  <Sparkles className="w-6 h-6 text-white" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#FF6B2C] to-[#e85a1f] shadow-lg shadow-[#FF6B2C]/30">
+                  <Sparkles className="h-6 w-6 text-white" />
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-slate-900" />
+                <span className="absolute -right-0.5 -bottom-0.5 h-3.5 w-3.5 rounded-full border-2 border-[#1a1a1a] bg-[#FFC107]" />
               </div>
               <div>
-                <h3 className="font-semibold text-white text-lg">
+                <h3 className="text-lg font-semibold text-white">
                   Learning Assistant
                 </h3>
-                <p className="text-sm text-cyan-300/70">
-                  Ultra exclusive • AI-powered
+                <p className="text-sm text-[#FFC107]/90">
+                  {isUltra ? "Ultra • AI-powered" : "Sign in • Ultra unlocks chat"}
                 </p>
               </div>
             </div>
             <button
               type="button"
               onClick={closeChat}
-              className="
-                p-2.5 rounded-xl
-                text-slate-400 hover:text-white
-                hover:bg-white/10
-                transition-colors
-              "
+              className="rounded-xl p-2.5 text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
               aria-label="Close chat"
             >
-              <PanelRightClose className="w-6 h-6" />
+              <PanelRightClose className="h-6 w-6" />
             </button>
           </div>
 
-          {/* Chat Content - Takes remaining space */}
-          <div className="flex-1 overflow-hidden">
-            <TutorChat />
+          <div className="min-h-0 flex-1 overflow-hidden">
+            {isUltra ? <TutorChat /> : <TutorUpsell />}
           </div>
         </div>
       </div>
 
-      {/* Floating Action Button */}
       <button
         type="button"
         onClick={toggleChat}
         className={`
-          fixed bottom-6 right-6 z-50
-          w-16 h-16
-          bg-gradient-to-br from-cyan-400 to-blue-600
-          hover:from-cyan-300 hover:to-blue-500
-          rounded-full
-          shadow-lg shadow-cyan-500/30
-          hover:shadow-xl hover:shadow-cyan-500/40
-          transition-all duration-300
-          flex items-center justify-center
-          group
-          ${isOpen ? "scale-0 opacity-0" : "scale-100 opacity-100"}
+          group fixed right-6 bottom-6 z-[110] flex h-16 w-16 items-center justify-center
+          rounded-full bg-gradient-to-br from-[#FF6B2C] to-[#e85a1f] shadow-lg
+          shadow-[#FF6B2C]/35 transition-all duration-300 hover:shadow-xl
+          hover:shadow-[#FF6B2C]/45
+          ${isOpen ? "pointer-events-none scale-0 opacity-0" : "scale-100 opacity-100"}
         `}
         aria-label="Open AI tutor"
       >
-        <div
-          className="
-            absolute inset-0 rounded-full
-            bg-gradient-to-br from-cyan-400 to-blue-600
-            animate-ping opacity-30
-          "
-        />
-        <MessageCircle className="w-7 h-7 text-white transition-transform group-hover:scale-110" />
+        <span className="absolute inset-0 animate-ping rounded-full bg-[#FF6B2C] opacity-25" />
+        <MessageCircle className="relative h-7 w-7 text-white transition-transform group-hover:scale-110" />
       </button>
     </>
   );
 }
 
 export function TutorWidget() {
-  const { isLoaded, has } = useAuth();
+  const { isLoaded, userId, has } = useAuth();
 
-  // Wait for Clerk to load
   if (!isLoaded) {
     return null;
   }
 
-  // Only show widget for Ultra members
-  const isUltra = has?.({ plan: "ultra" });
-  if (!isUltra) {
+  if (!userId) {
     return null;
   }
 
+  const isUltra = Boolean(has?.({ plan: "ultra" }));
+
   return (
     <TutorProvider>
-      <TutorPanel />
+      <TutorPanel isUltra={isUltra} />
     </TutorProvider>
   );
 }

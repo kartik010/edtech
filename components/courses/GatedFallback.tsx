@@ -9,24 +9,24 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TIER_STYLES, type Tier } from "@/lib/constants";
 
-// Muted gradient variants for background overlays
 const TIER_GRADIENT_MUTED: Record<Tier, string> = {
-  free: "from-emerald-500/20 to-teal-600/20",
-  pro: "from-violet-500/20 to-fuchsia-600/20",
-  ultra: "from-cyan-400/20 to-blue-600/20",
+  free: "from-emerald-500/15 to-teal-600/15",
+  pro: "from-[#FF6B2C]/15 to-amber-500/15",
+  ultra: "from-amber-400/15 to-orange-600/15",
 };
 
-interface GatedFallbackProps {
-  courseId: string;
-  courseTitle: string;
-  requiredTier: Tier | null | undefined;
-}
+const ctaClass =
+  "border-0 bg-[#FF6B2C] text-white shadow-lg shadow-[#FF6B2C]/25 hover:bg-[#e85a24] px-8";
 
 export function GatedFallback({
   courseId,
   courseTitle,
   requiredTier,
-}: GatedFallbackProps) {
+}: {
+  courseId: string;
+  courseTitle: string;
+  requiredTier: Tier | null | undefined;
+}) {
   const [isPending, setIsPending] = useState(false);
   const { user, isLoaded } = useUser();
   const router = useRouter();
@@ -48,7 +48,7 @@ export function GatedFallback({
       if (!res.ok) throw new Error(data.error || "Failed to create order");
 
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Ensure this is set in .env.local
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: data.amount,
         currency: data.currency,
         name: "Acme EdTech",
@@ -60,7 +60,6 @@ export function GatedFallback({
           razorpay_signature: string;
         }) => {
           try {
-            // Verify Payment
             const verifyRes = await fetch("/api/razorpay/verify", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -89,7 +88,7 @@ export function GatedFallback({
           email: user?.primaryEmailAddress?.emailAddress,
         },
         theme: {
-          color: "#8b5cf6",
+          color: "#FF6B2C",
         },
       };
 
@@ -105,7 +104,6 @@ export function GatedFallback({
       ).Razorpay(options);
       paymentObject.open();
 
-      // Handle failed payment closing
       paymentObject.on("payment.failed", (response: { error: unknown }) => {
         console.error("Payment failed", response.error);
         setIsPending(false);
@@ -120,42 +118,32 @@ export function GatedFallback({
     <>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
       <div
-        className={`relative rounded-2xl bg-gradient-to-br ${gradientMuted} border ${styles.border} p-8 md:p-12 overflow-hidden`}
+        className={`relative overflow-hidden rounded-2xl border border-[#e2e8f0] bg-white p-8 shadow-sm md:p-12`}
       >
-        {/* Background decoration */}
-        <div className="absolute inset-0 bg-[#09090b]/80" />
         <div
-          className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${gradientMuted} rounded-full blur-[100px] opacity-50`}
+          className={`pointer-events-none absolute top-0 right-0 h-64 w-64 rounded-full bg-gradient-to-br ${gradientMuted} blur-[100px] opacity-60`}
         />
 
-        <div className="relative z-10 max-w-xl mx-auto text-center">
-          {/* Lock icon */}
+        <div className="relative z-10 mx-auto max-w-xl text-center">
           <div
-            className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-zinc-800/50 border ${styles.border} mb-6`}
+            className={`mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl border bg-[rgba(255,107,44,0.1)] ${styles.border}`}
           >
-            <Lock className={`w-7 h-7 ${styles.text}`} />
+            <Lock className={`h-7 w-7 ${styles.text}`} />
           </div>
 
-          {/* Title */}
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          <h2 className="mb-4 text-2xl font-bold text-[#1A1A1A] md:text-3xl">
             Enroll in <span className={styles.text}>{courseTitle}</span> to
             unlock this content
           </h2>
 
-          {/* Description */}
-          <p className="text-zinc-400 mb-8 max-w-md mx-auto">
+          <p className="mx-auto mb-8 max-w-md text-[rgba(26,26,26,0.58)]">
             This module is part of the premium course curriculum. Secure your
             lifetime access today for just $59.
           </p>
 
-          {/* CTA Button */}
           {!isLoaded ? (
-            <Button
-              size="lg"
-              disabled
-              className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8"
-            >
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            <Button size="lg" disabled className={ctaClass}>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Checking access...
             </Button>
           ) : user ? (
@@ -163,33 +151,29 @@ export function GatedFallback({
               size="lg"
               disabled={isPending}
               onClick={handlePurchase}
-              className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8"
+              className={ctaClass}
             >
               {isPending ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
-                <Sparkles className="w-4 h-4 mr-2" />
+                <Sparkles className="mr-2 h-4 w-4" />
               )}
-              {isPending ? "Processing..." : "Purchase Course  —  $59"}
+              {isPending ? "Processing..." : "Purchase course — $59"}
             </Button>
           ) : (
             <SignInButton mode="modal">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-xl shadow-violet-600/30 px-8"
-              >
-                <Lock className="w-4 h-4 mr-2" />
-                Sign in to Purchase
+              <Button size="lg" className={ctaClass}>
+                <Lock className="mr-2 h-4 w-4" />
+                Sign in to purchase
               </Button>
             </SignInButton>
           )}
 
-          {/* Sponsorship CTA */}
-          <p className="mt-5 text-sm text-zinc-500">
+          <p className="mt-5 text-sm text-[rgba(26,26,26,0.45)]">
             Can&apos;t afford it?{" "}
             <Link
               href={`/sponsor?courseId=${courseId}&courseTitle=${encodeURIComponent(courseTitle)}`}
-              className="text-fuchsia-400 hover:text-fuchsia-300 underline underline-offset-4 transition-colors"
+              className="text-[#FF6B2C] underline underline-offset-4 transition-colors hover:text-[#e85a24]"
             >
               Apply for a sponsorship →
             </Link>

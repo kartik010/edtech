@@ -47,13 +47,13 @@ export function CourseList({
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           {showSearch && (
             <div className="relative w-full sm:w-72">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+              <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[rgba(26,26,26,0.4)]" />
               <Input
                 type="text"
                 placeholder="Search courses..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-zinc-900/50 border-zinc-800 text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+                className="border-[#e2e8f0] bg-white pl-10 text-[#1A1A1A] placeholder:text-[rgba(26,26,26,0.4)] focus-visible:ring-[#FF6B2C]/40"
               />
             </div>
           )}
@@ -80,17 +80,17 @@ export function CourseList({
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="w-16 h-16 rounded-full bg-zinc-800/50 flex items-center justify-center mb-4">
-            <Search className="w-6 h-6 text-zinc-500" />
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[#e2e8f0] bg-[#F8F9FA]">
+            <Search className="h-6 w-6 text-[rgba(26,26,26,0.35)]" />
           </div>
-          <p className="text-zinc-400">{emptyMessage}</p>
+          <p className="text-[rgba(26,26,26,0.55)]">{emptyMessage}</p>
           {searchQuery && (
             <button
               type="button"
               onClick={() => {
                 setSearchQuery("");
               }}
-              className="mt-2 text-sm text-violet-400 hover:text-violet-300 transition-colors"
+              className="mt-2 text-sm font-medium text-[#FF6B2C] transition-colors hover:text-[#e85a24]"
             >
               Clear filters
             </button>

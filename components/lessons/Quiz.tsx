@@ -7,7 +7,6 @@ import { submitQuizAttempt } from "@/lib/actions";
 import type { LESSON_BY_SLUG_QUERYResult } from "@/sanity.types";
 
 type NonNullLesson = NonNullable<LESSON_BY_SLUG_QUERYResult>;
-// Extract the quiz array type from the lesson type
 type QuizQuestions = NonNullable<NonNullLesson["quiz"]>;
 
 interface QuizQuestion {
@@ -40,7 +39,7 @@ export function Quiz({
   } | null>(null);
 
   const handleOptionSelect = (questionKey: string, option: string) => {
-    if (result) return; // Prevent changing answers after submission
+    if (result) return;
     setAnswers((prev) => ({
       ...prev,
       [questionKey]: option,
@@ -50,7 +49,6 @@ export function Quiz({
   const handleSubmit = () => {
     if (!questions || questions.length === 0) return;
 
-    // Calculate score
     let correctCount = 0;
     questions.forEach((q) => {
       const answer = answers[q._key];
@@ -84,22 +82,22 @@ export function Quiz({
     questions && Object.keys(answers).length === questions.length;
 
   return (
-    <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 md:p-8 mt-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="mt-8 rounded-xl border border-[#e2e8f0] bg-white p-6 shadow-sm md:p-8">
+      <div className="mb-8 flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-white mb-2">Lesson Quiz</h2>
-          <p className="text-zinc-400 text-sm">
+          <h2 className="mb-2 text-xl font-bold text-[#1A1A1A]">Lesson quiz</h2>
+          <p className="text-sm text-[rgba(26,26,26,0.55)]">
             You must score 80% or higher to complete this lesson.
           </p>
         </div>
         {bestScore !== null && (
-          <div className="bg-zinc-800/80 px-4 py-2 rounded-lg border border-zinc-700 font-medium">
-            <span className="text-zinc-400 text-xs uppercase tracking-wider block mb-1">
-              Best Score
+          <div className="rounded-lg border border-[#e2e8f0] bg-[#F8F9FA] px-4 py-2 font-medium">
+            <span className="mb-1 block text-xs tracking-wider text-[rgba(26,26,26,0.45)] uppercase">
+              Best score
             </span>
             <span
               className={`text-xl font-bold ${
-                bestScore >= 80 ? "text-emerald-400" : "text-amber-400"
+                bestScore >= 80 ? "text-emerald-600" : "text-amber-600"
               }`}
             >
               {bestScore}%
@@ -113,9 +111,9 @@ export function Quiz({
           return (
             <div
               key={q._key}
-              className="bg-zinc-800/30 rounded-lg p-5 border border-zinc-800"
+              className="rounded-lg border border-[#e2e8f0] bg-[#FAFAFA] p-5"
             >
-              <h3 className="text-lg font-medium text-white mb-4">
+              <h3 className="mb-4 text-lg font-medium text-[#1A1A1A]">
                 {index + 1}. {q.title}
               </h3>
 
@@ -126,20 +124,20 @@ export function Quiz({
                   const isCorrectAnswer = option === q.correctAnswer;
 
                   let optionClass =
-                    "border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 outline-none text-zinc-300";
+                    "border-[#e2e8f0] text-[#1A1A1A] outline-none hover:border-[#cbd5e1] hover:bg-white";
 
                   if (isSelected && !showCorrection) {
                     optionClass =
-                      "border-violet-500 bg-violet-500/10 text-violet-300";
+                      "border-[#FF6B2C] bg-[rgba(255,107,44,0.08)] text-[#1A1A1A]";
                   } else if (showCorrection) {
                     if (isCorrectAnswer) {
                       optionClass =
-                        "border-emerald-500/50 bg-emerald-500/10 text-emerald-400";
+                        "border-emerald-300 bg-emerald-50 text-emerald-900";
                     } else if (isSelected && !isCorrectAnswer) {
-                      optionClass =
-                        "border-red-500/50 bg-red-500/10 text-red-400";
+                      optionClass = "border-red-300 bg-red-50 text-red-900";
                     } else {
-                      optionClass = "border-zinc-800 text-zinc-500 opacity-50";
+                      optionClass =
+                        "border-[#e2e8f0] text-[rgba(26,26,26,0.4)] opacity-60";
                     }
                   }
 
@@ -149,15 +147,15 @@ export function Quiz({
                       key={option}
                       onClick={() => handleOptionSelect(q._key, option)}
                       disabled={result !== null}
-                      className={`w-full text-left px-4 py-3 rounded-lg border transition-colors ${optionClass}`}
+                      className={`w-full rounded-lg border px-4 py-3 text-left transition-colors ${optionClass}`}
                     >
                       <div className="flex items-center justify-between">
                         <span>{option}</span>
                         {showCorrection && isCorrectAnswer && (
-                          <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                          <CheckCircle2 className="h-5 w-5 text-emerald-600" />
                         )}
                         {showCorrection && isSelected && !isCorrectAnswer && (
-                          <XCircle className="w-5 h-5 text-red-500" />
+                          <XCircle className="h-5 w-5 text-red-600" />
                         )}
                       </div>
                     </button>
@@ -174,31 +172,31 @@ export function Quiz({
           <Button
             onClick={handleSubmit}
             disabled={!isComplete || isPending}
-            className="bg-violet-600 hover:bg-violet-500 text-white min-w-[120px]"
+            className="min-w-[120px] border-0 bg-[#FF6B2C] text-white hover:bg-[#e85a24]"
           >
             {isPending ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : null}
-            Submit Quiz
+            Submit quiz
           </Button>
         </div>
       ) : (
         <div
-          className={`mt-8 p-6 rounded-xl border flex flex-col items-center text-center ${
+          className={`mt-8 flex flex-col items-center rounded-xl border p-6 text-center ${
             result.passed
-              ? "bg-emerald-500/10 border-emerald-500/20"
-              : "bg-red-500/10 border-red-500/20"
+              ? "border-emerald-200 bg-emerald-50"
+              : "border-red-200 bg-red-50"
           }`}
         >
           {result.passed ? (
-            <CheckCircle2 className="w-12 h-12 text-emerald-500 mb-4" />
+            <CheckCircle2 className="mb-4 h-12 w-12 text-emerald-600" />
           ) : (
-            <XCircle className="w-12 h-12 text-red-500 mb-4" />
+            <XCircle className="mb-4 h-12 w-12 text-red-600" />
           )}
-          <h3 className="text-2xl font-bold text-white mb-2">
+          <h3 className="mb-2 text-2xl font-bold text-[#1A1A1A]">
             You scored {result.score}%
           </h3>
-          <p className={result.passed ? "text-emerald-400" : "text-red-400"}>
+          <p className={result.passed ? "text-emerald-800" : "text-red-800"}>
             {result.passed
               ? "Congratulations! You've passed the quiz and completed the lesson."
               : "You need 80% to pass. Review the lesson and try again!"}
@@ -211,9 +209,9 @@ export function Quiz({
                 setAnswers({});
               }}
               variant="outline"
-              className="mt-6 border-zinc-700 hover:bg-zinc-800 text-white outline-none"
+              className="mt-6 border-[#e2e8f0] text-[#1A1A1A] outline-none hover:bg-white"
             >
-              Retry Quiz
+              Retry quiz
             </Button>
           )}
         </div>

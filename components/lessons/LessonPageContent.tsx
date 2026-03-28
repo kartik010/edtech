@@ -100,11 +100,13 @@ export function LessonPageContent({
             {/* Lesson Header */}
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold mb-2">
+                <h1 className="mb-2 text-2xl font-bold text-[#1A1A1A] md:text-3xl">
                   {lesson.title ?? "Untitled Lesson"}
                 </h1>
                 {lesson.description && (
-                  <p className="text-zinc-400">{lesson.description}</p>
+                  <p className="text-[rgba(26,26,26,0.58)]">
+                    {lesson.description}
+                  </p>
                 )}
               </div>
 
@@ -119,10 +121,12 @@ export function LessonPageContent({
 
             {/* Lesson Content */}
             {lesson.content && (
-              <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 md:p-8 mb-6">
-                <div className="flex items-center gap-2 mb-6">
-                  <BookOpen className="w-5 h-5 text-violet-400" />
-                  <h2 className="text-lg font-semibold">Lesson Notes</h2>
+              <div className="mb-6 rounded-xl border border-[#e2e8f0] bg-white p-6 shadow-sm md:p-8">
+                <div className="mb-6 flex items-center gap-2">
+                  <BookOpen className="h-5 w-5 text-[#FF6B2C]" />
+                  <h2 className="text-lg font-semibold text-[#1A1A1A]">
+                    Lesson notes
+                  </h2>
                 </div>
                 <LessonContent content={lesson.content} />
               </div>
@@ -139,12 +143,12 @@ export function LessonPageContent({
             )}
 
             {/* Navigation between lessons */}
-            <div className="flex items-center justify-between pt-6 border-t border-zinc-800">
+            <div className="flex items-center justify-between border-t border-[#e2e8f0] pt-6">
               {prevLesson ? (
                 <Link href={`/lessons/${prevLesson.slug}`}>
                   <Button
                     variant="ghost"
-                    className="text-zinc-400 hover:text-white hover:bg-zinc-800"
+                    className="text-[rgba(26,26,26,0.6)] hover:bg-[#F8F9FA] hover:text-[#1A1A1A]"
                   >
                     <ChevronLeft className="w-4 h-4 mr-2" />
                     <span className="hidden sm:inline">{prevLesson.title}</span>
@@ -157,7 +161,7 @@ export function LessonPageContent({
 
               {nextLesson ? (
                 <Link href={`/lessons/${nextLesson.slug}`}>
-                  <Button className="bg-violet-600 hover:bg-violet-500 text-white">
+                  <Button className="border-0 bg-[#FF6B2C] text-white hover:bg-[#e85a24]">
                     <span className="hidden sm:inline">{nextLesson.title}</span>
                     <span className="sm:hidden">Next</span>
                     <ChevronRight className="w-4 h-4 ml-2" />
